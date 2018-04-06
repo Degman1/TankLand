@@ -1,5 +1,5 @@
 //
-//  main.swift
+//  Tank.swift
 //  TankLand
 //
 //  Created by David Gerard on 4/6/18.
@@ -8,4 +8,6 @@
 
 import Foundation
 
-print("Hello World")
+class Tank {
+    
+}
