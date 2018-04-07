@@ -9,6 +9,10 @@
 /* Begin PBXBuildFile section */
 		63519DC12078064A00B61A58 /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63519DC02078064A00B61A58 /* main.swift */; };
 		63519DC8207808A300B61A58 /* Tank.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63519DC7207808A300B61A58 /* Tank.swift */; };
+		63519DCA20790D2E00B61A58 /* TankLandGrid.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63519DC920790D2E00B61A58 /* TankLandGrid.swift */; };
+		63519DCC20790D5700B61A58 /* GameObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63519DCB20790D5700B61A58 /* GameObject.swift */; };
+		63519DCE20790DC600B61A58 /* Mine.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63519DCD20790DC600B61A58 /* Mine.swift */; };
+		63519DD020790DF000B61A58 /* Rover.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63519DCF20790DF000B61A58 /* Rover.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -27,6 +31,10 @@
 		63519DBD2078064A00B61A58 /* TankLand */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = TankLand; sourceTree = BUILT_PRODUCTS_DIR; };
 		63519DC02078064A00B61A58 /* main.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = main.swift; sourceTree = "<group>"; };
 		63519DC7207808A300B61A58 /* Tank.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Tank.swift; sourceTree = "<group>"; };
+		63519DC920790D2E00B61A58 /* TankLandGrid.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TankLandGrid.swift; sourceTree = "<group>"; };
+		63519DCB20790D5700B61A58 /* GameObject.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameObject.swift; sourceTree = "<group>"; };
+		63519DCD20790DC600B61A58 /* Mine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Mine.swift; sourceTree = "<group>"; };
+		63519DCF20790DF000B61A58 /* Rover.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Rover.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -60,7 +68,11 @@
 			isa = PBXGroup;
 			children = (
 				63519DC02078064A00B61A58 /* main.swift */,
+				63519DC920790D2E00B61A58 /* TankLandGrid.swift */,
+				63519DCB20790D5700B61A58 /* GameObject.swift */,
 				63519DC7207808A300B61A58 /* Tank.swift */,
+				63519DCD20790DC600B61A58 /* Mine.swift */,
+				63519DCF20790DF000B61A58 /* Rover.swift */,
 			);
 			path = TankLand;
 			sourceTree = "<group>";
@@ -122,8 +134,12 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				63519DCC20790D5700B61A58 /* GameObject.swift in Sources */,
 				63519DC12078064A00B61A58 /* main.swift in Sources */,
+				63519DD020790DF000B61A58 /* Rover.swift in Sources */,
 				63519DC8207808A300B61A58 /* Tank.swift in Sources */,
+				63519DCE20790DC600B61A58 /* Mine.swift in Sources */,
+				63519DCA20790D2E00B61A58 /* TankLandGrid.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
