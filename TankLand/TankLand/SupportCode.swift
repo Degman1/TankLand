@@ -68,6 +68,6 @@ func fit(_ s: String, _ size: Int, right: Bool = false) -> String {
     var addon = ""
     let num = size - sSize
     for _ in 0..<num {addon.append(" ")}
-    if right {return result + addon}
+    if right {return result + addon} 
     return addon + result
 }
