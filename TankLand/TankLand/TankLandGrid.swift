@@ -49,23 +49,22 @@ struct TankLandGrid: CustomStringConvertible {
     var description: String {
         var gridDisplay = ""
         
-        for _ in 0..<size {
-            for j in 0...3 {
-                for k in 0..<size {
-                    if j == 0 {
-                        gridDisplay += "|------"
-                    } else if j == 1 {
-                        gridDisplay += "|\(fit(String(describing: grid[k][j]), 6, right: true))"
-                    } else if j == 2 {
-                        gridDisplay += "|\(fit(String(describing: grid[k][j]), 6, right: true))"
-                    } else if j == 3 {
-                        gridDisplay += "|\(fit(String(describing: grid[k][j]), 6, right: true))"
+        for row in 0..<size {             //loop through the # of rows
+            for attribute in 0...3 {            //within each row, loop through 4 times (1 for the top dividor and the other three for the game object info)
+                if attribute == 0 { gridDisplay += String(repeating: "|------", count: size) + "|\n"; continue }
+                
+                for column in 0..<size {     //within each row of looping through 4 times, loop through the # of columns access each individual element on the
+                    switch (attribute) {
+                    case 1: gridDisplay += "|\(fit(String(describing: grid[row][column]), 6, right: true))"
+                    case 2: gridDisplay += "|\(fit(String(describing: grid[row][column]), 6, right: true))"
+                    case 3: gridDisplay += "|\(fit(String(describing: grid[row][column]), 6, right: true))"
+                    default: return "error error error"    //TODO: is there a way to tell the switch statement that it will always be exhaustive no matter the inclusion of a default case
                     }
                 }
                 gridDisplay += "|\n"
             }
         }
-        gridDisplay += String(repeating: "|------", count: size)
+        gridDisplay += String(repeating: "|------", count: size) + "|"
         return gridDisplay
     }
 }
