@@ -11,4 +11,4 @@ import Foundation
 print("Hello World")
 
 var grid = TankLandGrid(size: 15)
-print(grid)
+
