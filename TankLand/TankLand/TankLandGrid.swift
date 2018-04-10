@@ -51,8 +51,7 @@ struct TankLandGrid: CustomStringConvertible {
         
         for row in 0..<size {             //loop through the # of rows
             for attribute in 0...3 {            //within each row, loop through 4 times (1 for the top dividor and the other three for the game object info)
-                if attribute == 0 { gridDisplay += String(repeating: "|------", count: size) + "|\n"; continue }
-                
+                if attribute == 0 { gridDisplay += String(repeating: "-------", count: size) + "-\n"; continue }
                 for column in 0..<size {     //within each row of looping through 4 times, loop through the # of columns access each individual element on the
                     switch (attribute) {
                     case 1: gridDisplay += "|\(fit(String(describing: grid[row][column]), 6, right: true))"
@@ -64,7 +63,7 @@ struct TankLandGrid: CustomStringConvertible {
                 gridDisplay += "|\n"
             }
         }
-        gridDisplay += String(repeating: "|------", count: size) + "|"
+        gridDisplay += String(repeating: "-------", count: size) + "-"
         return gridDisplay
     }
 }
