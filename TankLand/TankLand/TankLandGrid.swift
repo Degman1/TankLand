@@ -14,9 +14,9 @@ struct TankLandGrid: CustomStringConvertible {
     
     init(size: Int) {
         self.size = size
-        for i in 0...size {
+        for i in 0..<size {
             grid.append([])
-            for _ in 0...size {
+            for _ in 0..<size {
                 grid[i].append(nil)
             }
         }
@@ -45,19 +45,27 @@ struct TankLandGrid: CustomStringConvertible {
         print("GO \(GO) at position \(index) has been destroyed")
     }
     
+    //create a display of the grid for interface purposes
     var description: String {
         var gridDisplay = ""
-
-        for i in 0..<size {
-            for j in 0..<size {
-                if i % 2 == 0 {
-                    gridDisplay += "-------"
-                } else {
-                    gridDisplay += "|\(fit(String(describing: grid[i][j]), 6))"
+        
+        for _ in 0..<size {
+            for j in 0...3 {
+                for k in 0..<size {
+                    if j == 0 {
+                        gridDisplay += "|------"
+                    } else if j == 1 {
+                        gridDisplay += "|\(fit(String(describing: grid[k][j]), 6, right: true))"
+                    } else if j == 2 {
+                        gridDisplay += "|\(fit(String(describing: grid[k][j]), 6, right: true))"
+                    } else if j == 3 {
+                        gridDisplay += "|\(fit(String(describing: grid[k][j]), 6, right: true))"
+                    }
                 }
+                gridDisplay += "|\n"
             }
-            gridDisplay += (i % 2 == 0) ? "\n" : "|\n"
         }
+        gridDisplay += String(repeating: "|------", count: size)
         return gridDisplay
     }
 }
