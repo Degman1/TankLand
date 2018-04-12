@@ -8,6 +8,19 @@
 
 import Foundation
 
-class GameObject {
+class GameObject: CustomStringConvertible {
+    let name: String
+    var energyLevel: Int = 0
+    let type: GameObjectType
+    var coords: Position
     
+    init(name: String, type: GameObjectType, initialCoords: Position) {
+        self.name = name
+        self.type = type
+        self.coords = initialCoords
+    }
+    
+    var description: String {
+        return "\(type)"
+    }
 }

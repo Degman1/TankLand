@@ -61,8 +61,8 @@ func fit(_ s: String, _ size: Int, right: Bool = false) -> String {
         for c in s {
             if count < size {result.append(c)}
             count += 1
-            return result
         }
+        return result
     }
     result = s
     var addon = ""

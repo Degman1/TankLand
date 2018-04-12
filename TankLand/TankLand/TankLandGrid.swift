@@ -10,10 +10,9 @@ import Foundation
 
 struct TankLandGrid: CustomStringConvertible {
     var grid: [[GameObject?]] = [[]]
-    var size: Int
+    var size: Int = Constants.gridSize
     
-    init(size: Int) {
-        self.size = size
+    init() {
         for i in 0..<size {
             grid.append([])
             for _ in 0..<size {
@@ -22,48 +21,44 @@ struct TankLandGrid: CustomStringConvertible {
         }
     }
     
-    //convert from game coords ((0, 0) being bottom left) to array coords for the grid ((0, 0) being bottom left)
-    func convertIndex(coords: (Int, Int)) -> (Int, Int) {
-        return (size - coords.0 - 1, size - coords.1 - 1)
-    }
-    
     //create a tank on the grid
-    mutating func generateGO(GO: GameObject, coords: (Int, Int)) {
-        assert(coords.0 >= 0 || coords.0 < size, "Row index out of range for GO generation")
-        assert(coords.1 >= 0 || coords.1 < size, "Column index out of range for GO generation")
-        let index = convertIndex(coords: coords)
-        grid[index.0][index.1] = GO
-        print("GO \(GO) at position \(index) has been generated")
+    mutating func generateGO(GO: GameObject, coords: Position) {
+        assert(coords.x >= 0 || coords.x < size, "Row index out of range for GO generation")
+        assert(coords.y >= 0 || coords.y < size, "Column index out of range for GO generation")
+        grid[coords.y][coords.x] = GO
+        print("GO \(GO) at position \(coords) has been generated")
     }
     
     //remove a tank from the grid
-    mutating func destroyGO(GO: GameObject, coords: (Int, Int)) {
-        assert(coords.0 >= 0 || coords.0 < size, "Row index out of range for GO destruction")
-        assert(coords.1 >= 0 || coords.1 < size, "Column index out of range for GO destruction")
-        let index = convertIndex(coords: coords)
-        grid[index.0][index.1] = nil
-        print("GO \(GO) at position \(index) has been destroyed")
+    mutating func destroyGO(GO: GameObject, coords: Position) {
+        assert(coords.x >= 0 || coords.x < size, "Row index out of range for GO destruction")
+        assert(coords.y >= 0 || coords.y < size, "Column index out of range for GO destruction")    //assertions to make sure the GO location is in the grid
+        grid[coords.y][coords.x] = nil
+        print("GO \(GO) at position \(coords) has been destroyed")
     }
     
     //create a display of the grid for interface purposes
     var description: String {
-        var gridDisplay = ""
+        var gridDisplay = ""        //stores the display
+        
+        gridDisplay += String(repeating: "_________", count: size) + "_\n"  //add an initial dividor line for the top of the grid
         
         for row in 0..<size {             //loop through the # of rows
             for attribute in 0...3 {            //within each row, loop through 4 times (1 for the top dividor and the other three for the game object info)
-                if attribute == 0 { gridDisplay += String(repeating: "-------", count: size) + "-\n"; continue }
-                for column in 0..<size {     //within each row of looping through 4 times, loop through the # of columns access each individual element on the
-                    switch (attribute) {
-                    case 1: gridDisplay += "|\(fit(String(describing: grid[row][column]), 6, right: true))"
-                    case 2: gridDisplay += "|\(fit(String(describing: grid[row][column]), 6, right: true))"
-                    case 3: gridDisplay += "|\(fit(String(describing: grid[row][column]), 6, right: true))"
-                    default: return "error error error"    //TODO: is there a way to tell the switch statement that it will always be exhaustive no matter the inclusion of a default case
+                if attribute == 3 { gridDisplay += String(repeating: "|________", count: size) + "|\n"; continue }    //if its the last line in the sequence of each row, print the dividor line
+                for column in 0..<size {     //within each row of looping through 4 times (will reach this loop 3 of the 4), loop through the # of columns access each individual element on the grid
+                    if attribute == 0 {
+                        gridDisplay += "|\(fit((grid[row][column] == nil ? "" : "\(grid[row][column]!.name)"), 8, right: true))"
+                    } else if attribute == 1 {
+                        gridDisplay += "|\(fit(grid[row][column] == nil ? "" : "\(grid[row][column]!.energyLevel)", 8, right: true))"
+                    } else if attribute == 2 {
+                        gridDisplay += "|\(fit((grid[row][column] == nil ? "" : "\(grid[row][column]!.type)"), 8, right: true))"
                     }
+                    
                 }
-                gridDisplay += "|\n"
+                gridDisplay += "|\n"    //add the last dividor to finish the row
             }
         }
-        gridDisplay += String(repeating: "-------", count: size) + "-"
         return gridDisplay
     }
 }
