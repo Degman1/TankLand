@@ -10,4 +10,8 @@ import Foundation
 
 class Tank:  GameObject {
     
+    func getRelativeLocation() -> (Direction, Int) { // returns the distance + direction of another GO
+        return (Direction.N, 5) //random for now
+    }
+    
 }

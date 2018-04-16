@@ -29,6 +29,15 @@ struct TankLandGrid: CustomStringConvertible {
         print("GO \(GO) at position \(coords) has been generated")
     }
     
+    //create a tank on the grid
+    mutating func generateGO_rand(GO: GameObject) {
+        let coords = Position.getRandomCoords()
+        assert(coords.x >= 0 || coords.x < size, "Row index out of range for GO generation")
+        assert(coords.y >= 0 || coords.y < size, "Column index out of range for GO generation")
+        grid[coords.y][coords.x] = GO
+        print("GO \(GO) at position \(coords) has been generated")
+    }
+    
     //remove a tank from the grid
     mutating func destroyGO(GO: GameObject, coords: Position) {
         assert(coords.x >= 0 || coords.x < size, "Row index out of range for GO destruction")
