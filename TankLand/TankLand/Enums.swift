@@ -10,7 +10,7 @@ import Foundation
 
 //different types of game objects:
 enum GameObjectType {
-    case tank, mine, rover, missile
+    case gameObject, tank, mine, rover
 }
 
 //relative location directions:

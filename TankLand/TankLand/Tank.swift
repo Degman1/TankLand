@@ -9,9 +9,10 @@
 import Foundation
 
 class Tank:  GameObject {
-    
-    func getRelativeLocation() -> (Direction, Int) { // returns the distance + direction of another GO
-        return (Direction.N, 5) //random for now
+    override init(name: String, initialCoords: Position) {
+        var shields = false
+        super.init(name: name, initialCoords: initialCoords)
+        type = GameObjectType.tank
+        energy = Constants.initialTankEnergy
     }
-    
 }

@@ -9,18 +9,23 @@
 import Foundation
 
 class GameObject: CustomStringConvertible {
-    let name: String
-    var energyLevel: Int = 0
-    let type: GameObjectType
+    var name: String     //cant make this a constant since it needs to be changed in the init override in subclasses
+    var energy: Int = 0
+    var type: GameObjectType      //cant make this a constant since it needs to be changed in the init override in subclasses
     var coords: Position
+    var alive: Bool = true    //turn false once energy <= 0
+    let id: Int
+    static var idCounter = 0
     
-    init(name: String, type: GameObjectType, initialCoords: Position) {
+    init(name: String, initialCoords: Position) {
         self.name = name
-        self.type = type
         self.coords = initialCoords
+        type = GameObjectType.gameObject
+        id = GameObject.idCounter
+        GameObject.idCounter += 1
     }
     
     var description: String {
-        return "\(type)"
+        return "\(energy) \(name) \(coords)"
     }
 }

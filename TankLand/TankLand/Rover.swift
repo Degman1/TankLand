@@ -9,5 +9,9 @@
 import Foundation
 
 class Rover: Mine {
-    
+    override init(initialCoords: Position) {
+        super.init(initialCoords: initialCoords)
+        type = GameObjectType.rover
+        name = "\(GameObjectType.rover)"
+    }
 }
