@@ -10,9 +10,10 @@ import Foundation
 
 struct Grid: CustomStringConvertible {
     var grid: [[GameObject?]] = [[]]
-    var size: Int = Constants.gridSize
+    var size: Int
     
-    init() {
+    init(size: Int = Constants.gridSize) {
+        self.size = size
         for i in 0..<size {
             grid.append([])
             for _ in 0..<size {
@@ -23,8 +24,8 @@ struct Grid: CustomStringConvertible {
     
     //create a tank on the grid
     mutating func generateGO(GO: GameObject, coords: Position) {
-        assert(coords.x >= 0 || coords.x < size, "Row index out of range for GO generation")
-        assert(coords.y >= 0 || coords.y < size, "Column index out of range for GO generation")
+        assert(coords.x >= 0 && coords.x < size, "Row index \(coords) out of range for GO generation")
+        assert(coords.y >= 0 && coords.y < size, "Column index \(coords) out of range for GO generation")
         grid[coords.y][coords.x] = GO
         print("Game Object '\(GO.name)' at position \(coords) has been generated")
     }
@@ -32,18 +33,24 @@ struct Grid: CustomStringConvertible {
     //create a tank on the grid
     mutating func generateGO_rand(GO: GameObject) {
         let coords = Position.getRandomCoords()
-        assert(coords.x >= 0 || coords.x < size, "Row index out of range for GO generation")
-        assert(coords.y >= 0 || coords.y < size, "Column index out of range for GO generation")
+        assert(coords.x >= 0 && coords.x < size, "Row index out of range for GO generation")
+        assert(coords.y >= 0 && coords.y < size, "Column index out of range for GO generation")
         grid[coords.y][coords.x] = GO
         print("Game Object '\(GO.name)' at position \(coords) has been generated")
     }
     
     //remove a tank from the grid
     mutating func destroyGO(GO: GameObject, coords: Position) {
-        assert(coords.x >= 0 || coords.x < size, "Row index out of range for GO destruction")
-        assert(coords.y >= 0 || coords.y < size, "Column index out of range for GO destruction")    //assertions to make sure the GO location is in the grid
+        assert(coords.x >= 0 && coords.x < size, "Row index out of range for GO destruction")
+        assert(coords.y >= 0 && coords.y < size, "Column index out of range for GO destruction")    //assertions to make sure the GO location is in the grid
         grid[coords.y][coords.x] = nil
         print("Game Object '\(GO.name)' at position \(coords) has been destroyed")
+    }
+    
+    func locateGO(coords: Position) -> GameObject? {
+        assert(coords.x >= 0 && coords.x < size, "Row index out of range for GO destruction")
+        assert(coords.y >= 0 && coords.y < size, "Column index out of range for GO destruction")
+        return grid[coords.y][coords.x]
     }
     
     //create a display of the grid for interface purposes

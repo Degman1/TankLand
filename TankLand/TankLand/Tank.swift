@@ -9,8 +9,10 @@
 import Foundation
 
 class Tank:  GameObject {
+    var initialInstructions: String
+    
     override init(name: String, initialCoords: Position) {
-        var shields = false
+        initialInstructions = ""
         super.init(name: name, initialCoords: initialCoords)
         type = GameObjectType.tank
         energy = Constants.initialTankEnergy

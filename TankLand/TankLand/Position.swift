@@ -13,10 +13,10 @@ struct Position: CustomStringConvertible {
     let x: Int  //don't change it in conversion, so don't need origx
     let y: Int
     
-    init(_ x: Int, _ y: Int) {
+    init(_ x: Int, _ y: Int, gridSize: Int = Constants.gridSize) {
         self.x = x
         origy = y
-        self.y = Constants.gridSize - y - 1     //convert from game coords ((0, 0) being bottom left) to array coords for the grid ((0, 0) being bottom left)
+        self.y = gridSize - y - 1     //convert from game coords ((0, 0) being bottom left) to array coords for the grid ((0, 0) being bottom left)
     }
     
     static func getRandomCoords() -> Position {

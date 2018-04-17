@@ -12,7 +12,6 @@
 		63519DCA20790D2E00B61A58 /* Grid.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63519DC920790D2E00B61A58 /* Grid.swift */; };
 		63519DCC20790D5700B61A58 /* GameObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63519DCB20790D5700B61A58 /* GameObject.swift */; };
 		63519DCE20790DC600B61A58 /* Mine.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63519DCD20790DC600B61A58 /* Mine.swift */; };
-		63519DD020790DF000B61A58 /* Rover.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63519DCF20790DF000B61A58 /* Rover.swift */; };
 		63519DD220790E7000B61A58 /* SupportCode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63519DD120790E7000B61A58 /* SupportCode.swift */; };
 		6368ACDB207EE4EB00A44C39 /* Enums.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6368ACDA207EE4EB00A44C39 /* Enums.swift */; };
 		6368ACDD207EE5D800A44C39 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6368ACDC207EE5D800A44C39 /* Constants.swift */; };
@@ -42,7 +41,6 @@
 		63519DC920790D2E00B61A58 /* Grid.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Grid.swift; sourceTree = "<group>"; };
 		63519DCB20790D5700B61A58 /* GameObject.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameObject.swift; sourceTree = "<group>"; };
 		63519DCD20790DC600B61A58 /* Mine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Mine.swift; sourceTree = "<group>"; };
-		63519DCF20790DF000B61A58 /* Rover.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Rover.swift; sourceTree = "<group>"; };
 		63519DD120790E7000B61A58 /* SupportCode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SupportCode.swift; sourceTree = "<group>"; };
 		6368ACDA207EE4EB00A44C39 /* Enums.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Enums.swift; sourceTree = "<group>"; };
 		6368ACDC207EE5D800A44C39 /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
@@ -89,7 +87,6 @@
 				63519DCB20790D5700B61A58 /* GameObject.swift */,
 				63519DC7207808A300B61A58 /* Tank.swift */,
 				63519DCD20790DC600B61A58 /* Mine.swift */,
-				63519DCF20790DF000B61A58 /* Rover.swift */,
 				6368ACE6208521F000A44C39 /* RadarResult.swift */,
 				6368ACE2208521A500A44C39 /* Logger.swift */,
 				6368ACE4208521D500A44C39 /* MessageCenter.swift */,
@@ -163,7 +160,6 @@
 				6368ACE3208521A500A44C39 /* Logger.swift in Sources */,
 				63519DD220790E7000B61A58 /* SupportCode.swift in Sources */,
 				63519DC12078064A00B61A58 /* main.swift in Sources */,
-				63519DD020790DF000B61A58 /* Rover.swift in Sources */,
 				63519DC8207808A300B61A58 /* Tank.swift in Sources */,
 				63519DCE20790DC600B61A58 /* Mine.swift in Sources */,
 				6368ACE7208521F000A44C39 /* RadarResult.swift in Sources */,
