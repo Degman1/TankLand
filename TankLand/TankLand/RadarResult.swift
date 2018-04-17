@@ -21,7 +21,7 @@ struct RadarResult {
         radarResult = Grid(size: (distance * 2) + 1)
     }
     
-    mutating func runRadar() {
+    mutating func runRadar() -> Grid {
         print("running radar...")
         for row in -distance...distance {
             for col in -distance...distance {
@@ -35,5 +35,6 @@ struct RadarResult {
         }
         print("results of radar:")
         print(radarResult)
+        return radarResult
     }
 }

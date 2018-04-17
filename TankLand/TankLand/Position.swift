@@ -19,6 +19,7 @@ struct Position: CustomStringConvertible {
         self.y = gridSize - y - 1     //convert from game coords ((0, 0) being bottom left) to array coords for the grid ((0, 0) being bottom left)
     }
     
+    //return a set of random coords
     static func getRandomCoords() -> Position {
         return Position(Int(arc4random_uniform(UInt32(Constants.gridSize))), Int(arc4random_uniform(UInt32(Constants.gridSize))))
     }

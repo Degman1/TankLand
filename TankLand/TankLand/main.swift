@@ -22,7 +22,7 @@ GOs.append(j2)
 grid.generateGO(GO: j2, coords: j2.coords)
 print(grid)
 var radar1 = RadarResult(gameGrid: grid, origin: j1.coords, distance: 2)
-radar1.runRadar()
+let radarResult = radar1.runRadar()
 
 /*var j2 = GameObject(name: "J2", initialCoords: Position(0, 1))
 GOs.append(j2)

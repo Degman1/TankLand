@@ -26,6 +26,6 @@ class GameObject: CustomStringConvertible {
     }
     
     var description: String {
-        return "\(energy) \(name) \(coords)"
+        return "| \(name) -- \(coords) -- \(energy) |"
     }
 }

@@ -14,6 +14,7 @@ struct Grid: CustomStringConvertible {
     
     init(size: Int = Constants.gridSize) {
         self.size = size
+        //initialize the grid to have the correct # of spaces:
         for i in 0..<size {
             grid.append([])
             for _ in 0..<size {
@@ -47,6 +48,7 @@ struct Grid: CustomStringConvertible {
         print("Game Object '\(GO.name)' at position \(coords) has been destroyed")
     }
     
+    //find the contents of a given location
     func locateGO(coords: Position) -> GameObject? {
         assert(coords.x >= 0 && coords.x < size, "Row index out of range for GO destruction")
         assert(coords.y >= 0 && coords.y < size, "Column index out of range for GO destruction")

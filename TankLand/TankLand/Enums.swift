@@ -18,6 +18,8 @@ enum Direction {
     case N, NE, E, SE, S, SW, W, NW
 }
 
+
 enum Actions {
-    case SendMessage, ReciveMessage, RunRadar, SetShields, DropMineOrRover, FireMissile, Move
+    case SendMessage, ReciveMessage, RunRadar, SetShields   // pre-actions
+    case DropMineOrRover, FireMissile, Move                 // actions
 }
