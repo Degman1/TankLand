@@ -28,7 +28,7 @@ struct Grid: CustomStringConvertible {
         assert(coords.x >= 0 && coords.x < size, "Row index \(coords) out of range for GO generation")
         assert(coords.y >= 0 && coords.y < size, "Column index \(coords) out of range for GO generation")
         grid[coords.y][coords.x] = GO
-        print("Game Object '\(GO.name)' at position \(coords) has been generated")
+        logger.log("Game Object '\(GO.name)' at position \(coords) has been generated")
     }
     
     //create a tank on the grid
@@ -37,7 +37,7 @@ struct Grid: CustomStringConvertible {
         assert(coords.x >= 0 && coords.x < size, "Row index out of range for GO generation")
         assert(coords.y >= 0 && coords.y < size, "Column index out of range for GO generation")
         grid[coords.y][coords.x] = GO
-        print("Game Object '\(GO.name)' at position \(coords) has been generated")
+        logger.log("Game Object '\(GO.name)' at position \(coords) has been generated")
     }
     
     //remove a tank from the grid
@@ -45,7 +45,7 @@ struct Grid: CustomStringConvertible {
         assert(coords.x >= 0 && coords.x < size, "Row index out of range for GO destruction")
         assert(coords.y >= 0 && coords.y < size, "Column index out of range for GO destruction")    //assertions to make sure the GO location is in the grid
         grid[coords.y][coords.x] = nil
-        print("Game Object '\(GO.name)' at position \(coords) has been destroyed")
+        logger.log("Game Object '\(GO.name)' at position \(coords) has been destroyed")
     }
     
     //find the contents of a given location

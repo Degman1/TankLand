@@ -10,8 +10,11 @@ import Foundation
 
 print("Hello World")
 
-/*
- RadarResult testing:
+var logger = Logger()
+
+
+
+// RadarResult testing:
  
  var GOs: [GameObject] = []
 
@@ -28,14 +31,14 @@ var j3 = GameObject(name: "J3", initialCoords: Position(0, 1))
 GOs.append(j3)
 grid.generateGO(GO: j3, coords: j3.coords)
 
-print(grid)
+logger.log("\(grid)")
 var radar1 = RadarResult(gameGrid: grid, origin: j1.coords, distance: 2)
 let radarResult = radar1.runRadar()
- 
- */
+
+let output = logger.displayLogger()
 
 /*
- Basic Grid Operation Testing:
+// Basic Grid Operation Testing:
  
 var GOs: [GameObject] = []
  

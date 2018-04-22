@@ -94,9 +94,9 @@
 				6368ACE4208521D500A44C39 /* MessageCenter.swift */,
 				6368ACE82085222F00A44C39 /* TankWorld.swift */,
 				6368ACDA207EE4EB00A44C39 /* Enums.swift */,
+				63E29F4A208C19C100530550 /* Protocols.swift */,
 				6368ACDC207EE5D800A44C39 /* Constants.swift */,
 				63519DD120790E7000B61A58 /* SupportCode.swift */,
-				63E29F4A208C19C100530550 /* Protocols.swift */,
 			);
 			path = TankLand;
 			sourceTree = "<group>";
