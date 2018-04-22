@@ -8,7 +8,7 @@
 
 import Foundation
 
-struct Position: CustomStringConvertible {
+struct Position: CustomStringConvertible, Hashable {
     let origy: Int
     let x: Int  //don't change it in conversion, so don't need origx
     let y: Int
@@ -24,7 +24,19 @@ struct Position: CustomStringConvertible {
         return Position(Int(arc4random_uniform(UInt32(Constants.gridSize))), Int(arc4random_uniform(UInt32(Constants.gridSize))))
     }
     
+    func pair(_ a: Int, _ b: Int) -> Int {
+        return ((a + b) * (a + b + 1) / 2) + b
+    }
+    
+    static func ==(lhs: Position, rhs: Position) -> Bool {
+        return (lhs.x == rhs.x) && (lhs.y == rhs.y)
+    }
+    
+    var hashValue: Int {
+        return(pair(x, y))
+    }
+    
     var description: String {
-        return "(\(x), \(origy))"
+        return "(\(x), \(y) (\(origy)))"
     }
 }

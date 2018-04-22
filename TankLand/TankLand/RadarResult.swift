@@ -10,31 +10,36 @@ import Foundation
 
 struct RadarResult {
     var gameGrid: Grid
-    let GOlocation: Position
+    let origin: Position
     let distance: Int
     var radarResult: Grid
     
     init(gameGrid: Grid, origin: Position, distance: Int) {
         self.gameGrid = gameGrid
-        self.GOlocation = origin
+        self.origin = origin
         self.distance = distance
         radarResult = Grid(size: (distance * 2) + 1)
     }
     
-    mutating func runRadar() -> Grid {
+    mutating func runRadar() -> [Position: GameObjectType] {
         print("running radar...")
+        var result: [Position: GameObjectType] = [:]
+        
         for row in -distance...distance {
             for col in -distance...distance {
-                
-                if (GOlocation.x + row < gameGrid.size) && (GOlocation.x + row >= 0) && (GOlocation.y + row < gameGrid.size) && (GOlocation.y + row >= 0), let GO = gameGrid.locateGO(coords: Position(GOlocation.origy + col, GOlocation.x + row)) {   //TODO: HAS PROBLEMS WHEN GOES OUTSIDE OF GAME GRID
-                    //if all the coordinates are in boundsof the game grid, then try to unwrap the GO and if it is there, add it to the radarResult grid
+                if (origin.x + col < gameGrid.size) && (origin.x + col >= 0) && (origin.origy + row < gameGrid.size) && (origin.origy + row >= 0) && ((row != 0) || (col != 0)), let GO = gameGrid.locateGO(coords: Position(origin.x + col, origin.origy + row)) {
 
-                    radarResult.generateGO(GO: GO, coords: Position(col + distance, row + distance, gridSize: radarResult.size))    //using origy instead of y b/c Position will redo the coordinate shift and I don't want the new shifted version reverted -- also inputting size of new grid for the conversion
+                    //if all the coordinates are in boundsof the game grid, then try to unwrap the GO and if it is there, add it to the radarResult grid:
+                    result[Position(origin.x + col, origin.y - row)] = GO.type      //using origy instead of y b/c Position will redo the coordinate shift and I don't want the new shifted version reverted
+                    //only works when you subtract the row. I think this is b/c it loops from the bottom left to top right, and the coordinates go in the other direction, so flipping the row reverses origin looping point
+                    
+                    //radarResult.generateGO(GO: GO, coords: Position(col + distance, row + distance, gridSize: radarResult.size)) --- use this if want to create new grid based off radar results -- remember to input new grid size
+                    
                 }
             }
         }
-        print("results of radar:")
-        print(radarResult)
-        return radarResult
+        print("\nresults of radar:")
+        print(result)
+        return result
     }
 }

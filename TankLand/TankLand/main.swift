@@ -10,7 +10,10 @@ import Foundation
 
 print("Hello World")
 
-var GOs: [GameObject] = []
+/*
+ RadarResult testing:
+ 
+ var GOs: [GameObject] = []
 
 var grid = Grid()
 var j1 = GameObject(name: "J1", initialCoords: Position(1, 1))
@@ -20,11 +23,23 @@ grid.generateGO(GO: j1, coords: j1.coords)
 var j2 = GameObject(name: "J2", initialCoords: Position(1, 2))
 GOs.append(j2)
 grid.generateGO(GO: j2, coords: j2.coords)
+
+var j3 = GameObject(name: "J3", initialCoords: Position(0, 1))
+GOs.append(j3)
+grid.generateGO(GO: j3, coords: j3.coords)
+
 print(grid)
 var radar1 = RadarResult(gameGrid: grid, origin: j1.coords, distance: 2)
 let radarResult = radar1.runRadar()
+ 
+ */
 
-/*var j2 = GameObject(name: "J2", initialCoords: Position(0, 1))
+/*
+ Basic Grid Operation Testing:
+ 
+var GOs: [GameObject] = []
+ 
+var j2 = GameObject(name: "J2", initialCoords: Position(0, 1))
 GOs.append(j2)
 var j3 = GameObject(name: "J3", initialCoords: Position(1, 0))
 GOs.append(j3)
