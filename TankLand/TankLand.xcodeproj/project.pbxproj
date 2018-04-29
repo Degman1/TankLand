@@ -21,6 +21,7 @@
 		6368ACE7208521F000A44C39 /* RadarResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6368ACE6208521F000A44C39 /* RadarResult.swift */; };
 		6368ACE92085222F00A44C39 /* TankWorld.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6368ACE82085222F00A44C39 /* TankWorld.swift */; };
 		63E29F4B208C19C100530550 /* Protocols.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63E29F4A208C19C100530550 /* Protocols.swift */; };
+		63FA10EF20960DBF00CBD425 /* Actions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63FA10EE20960DBF00CBD425 /* Actions.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -51,6 +52,7 @@
 		6368ACE6208521F000A44C39 /* RadarResult.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RadarResult.swift; sourceTree = "<group>"; };
 		6368ACE82085222F00A44C39 /* TankWorld.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TankWorld.swift; sourceTree = "<group>"; };
 		63E29F4A208C19C100530550 /* Protocols.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Protocols.swift; sourceTree = "<group>"; };
+		63FA10EE20960DBF00CBD425 /* Actions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Actions.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -90,6 +92,7 @@
 				63519DC7207808A300B61A58 /* Tank.swift */,
 				63519DCD20790DC600B61A58 /* Mine.swift */,
 				6368ACE6208521F000A44C39 /* RadarResult.swift */,
+				63FA10EE20960DBF00CBD425 /* Actions.swift */,
 				6368ACE2208521A500A44C39 /* Logger.swift */,
 				6368ACE4208521D500A44C39 /* MessageCenter.swift */,
 				6368ACE82085222F00A44C39 /* TankWorld.swift */,
@@ -169,6 +172,7 @@
 				6368ACDB207EE4EB00A44C39 /* Enums.swift in Sources */,
 				63E29F4B208C19C100530550 /* Protocols.swift in Sources */,
 				6368ACE5208521D500A44C39 /* MessageCenter.swift in Sources */,
+				63FA10EF20960DBF00CBD425 /* Actions.swift in Sources */,
 				63519DCA20790D2E00B61A58 /* Grid.swift in Sources */,
 				6368ACDF207EE97800A44C39 /* Position.swift in Sources */,
 				6368ACDD207EE5D800A44C39 /* Constants.swift in Sources */,
