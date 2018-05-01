@@ -82,7 +82,11 @@ struct MoveAction {
     
     init(inDirection: Direction, withDistance: Int) {
         direction = inDirection
-        assert(distance >= 0 && distance <= 3, "Invalid Action: Unable to move game object less than zero spaces and more than three")
-        distance = withDistance
+        if withDistance >= 0 && withDistance <= 3 {
+            distance = withDistance
+        } else {
+            logger.warning("Invalid Action: Unable to move game object less than zero spaces or more than three")
+            distance = 0
+        }
     }
 }
