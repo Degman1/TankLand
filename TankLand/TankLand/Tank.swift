@@ -36,4 +36,8 @@ class Tank:  GameObject {
     func computePostActions() {
         
     }
+    
+    final func addPreAction(preAction: PreAction) {
+        preActions[preAction.action] = preAction
+    }
 }
