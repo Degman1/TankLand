@@ -9,49 +9,43 @@
 import Foundation
 
 struct Grid: CustomStringConvertible {
-    var grid: [[GameObject?]] = [[]]
+    var grid: [[GameObject?]]
     var size: Int
     
     init(size: Int = Constants.gridSize) {
         self.size = size
-        //initialize the grid to have the correct # of spaces:
-        for i in 0..<size {
-            grid.append([])
-            for _ in 0..<size {
-                grid[i].append(nil)
-            }
-        }
+        grid = Array(repeating: Array(repeating: nil, count: size), count: size)
+    }
+    
+    func isGoodIndex(_ coords: Position) {
+        assert(coords.x >= 0 && coords.x < size, "Row index \(coords) out of range for GO operation on Grid")
+        assert(coords.y >= 0 && coords.y < size, "Column index \(coords) out of range for GO operation on Grid")
     }
     
     //create a tank on the grid
     mutating func generateGO(GO: GameObject, coords: Position) {
-        assert(coords.x >= 0 && coords.x < size, "Row index \(coords) out of range for GO generation")
-        assert(coords.y >= 0 && coords.y < size, "Column index \(coords) out of range for GO generation")
+        isGoodIndex(coords)     //assertions to make sure the GO location is in the grid
         grid[coords.y][coords.x] = GO
-        logger.log("Game Object '\(GO.name)' at position \(coords) has been generated")
+        logger.log("Game Object '\(GO.id)' at position \(coords) has been generated")
     }
     
     //create a tank on the grid
     mutating func generateGO_rand(GO: GameObject) {
         let coords = Position.getRandomCoords()
-        assert(coords.x >= 0 && coords.x < size, "Row index out of range for GO generation")
-        assert(coords.y >= 0 && coords.y < size, "Column index out of range for GO generation")
         grid[coords.y][coords.x] = GO
-        logger.log("Game Object '\(GO.name)' at position \(coords) has been generated")
+        logger.log("Game Object '\(GO.id)' at position \(coords) has been generated")
     }
     
     //remove a tank from the grid
     mutating func destroyGO(GO: GameObject, coords: Position) {
-        assert(coords.x >= 0 && coords.x < size, "Row index out of range for GO destruction")
-        assert(coords.y >= 0 && coords.y < size, "Column index out of range for GO destruction")    //assertions to make sure the GO location is in the grid
+        isGoodIndex(coords)
         grid[coords.y][coords.x] = nil
-        logger.log("Game Object '\(GO.name)' at position \(coords) has been destroyed")
+        logger.log("Game Object '\(GO.id)' at position \(coords) has been destroyed")
     }
     
     //find the contents of a given location
-    func locateGO(coords: Position) -> GameObject? {
-        assert(coords.x >= 0 && coords.x < size, "Row index out of range for GO destruction")
-        assert(coords.y >= 0 && coords.y < size, "Column index out of range for GO destruction")
+    func getGO(coords: Position) -> GameObject? {
+        isGoodIndex(coords)
         return grid[coords.y][coords.x]
     }
     
@@ -63,11 +57,11 @@ struct Grid: CustomStringConvertible {
                 if attribute == 3 { gridDisplay += String(repeating: "|________", count: size) + "|\n"; continue }    //if its the last line in the sequence of each row, print the dividor line
                 for column in 0..<size {     //within each row of looping through 4 times (will reach this loop 3 of the 4), loop through the # of columns access each individual element on the grid
                     if attribute == 0 {
-                        gridDisplay += "|\(fit((grid[row][column] == nil ? "" : "\(grid[row][column]!.name)"), 8, right: true))"
+                        gridDisplay += "|\(fit((grid[row][column] == nil ? "" : "\(grid[row][column]!.id)"), 8, right: true))"
                     } else if attribute == 1 {
                         gridDisplay += "|\(fit(grid[row][column] == nil ? "" : "\(grid[row][column]!.energy)", 8, right: true))"
                     } else if attribute == 2 {
-                        gridDisplay += "|\(fit((grid[row][column] == nil ? "" : "\(grid[row][column]!.type)"), 8, right: true))"
+                        gridDisplay += "|\(fit((grid[row][column] == nil ? "" : "\(grid[row][column]!.objectType)"), 8, right: true))"
                     }
                     
                 }

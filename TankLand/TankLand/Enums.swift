@@ -20,5 +20,5 @@ enum Direction {
 
 enum Actions {
     case SendMessage, ReciveMessage, RunRadar, SetShields   // pre-actions
-    case DropMineOrRover, FireMissile, Move                 // actions
+    case DropMine, DropRover, FireMissile, Move                 // actions
 }

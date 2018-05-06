@@ -8,85 +8,138 @@
 
 import Foundation
 
-struct SendMessageAction {
-    var type = Actions.SendMessage
+//actions protocols:
+
+protocol Action: CustomStringConvertible {
+    var action: Actions {get}
+    var description: String {get}
+}
+
+protocol PreAction: Action {
+    
+}
+
+protocol PostAction: Action {
+    
+}
+
+//action structs:
+
+struct SendMessageAction: PreAction {
+    var action: Actions
     var message: String
     var code: String
     
     init(message: String, code: String) {
+        action = .SendMessage
         self.message = message
         self.code = code
     }
+    
+    var description: String {
+        return "\(action) \(code)"
+    }
 }
 
-struct RecieveMessageAction {
-    var type = Actions.ReciveMessage
-    var message: String
+struct RecieveMessageAction: PreAction {
+    var action: Actions
     var code: String
     
     init(message: String, code: String) {
-        self.message = message
+        action = .ReciveMessage
         self.code = code
+    }
+    
+    var description: String {
+        return "\(action) \(code)"
     }
 }
 
-struct RunRadarAction {
-    var type = Actions.RunRadar
+struct RunRadarAction: PreAction {
+    var action: Actions
     var distance: Int
     
     init(distance: Int) {
+        action = .RunRadar
         self.distance = distance
     }
-}
-
-struct SetShieldAction {
-    var shieldEnergy: Int
     
-    init(shieldEnergy: Int) {
-        self.shieldEnergy = shieldEnergy
+    var description: String {
+        return "\(action) \(distance)"
     }
 }
 
-struct DropMineAction {
+struct SetShieldAction: PreAction {
+    var action: Actions
     var energy: Int
     
-    init(withEnergyOf: Int) {
-        energy = withEnergyOf
+    init(energy: Int) {
+        action = .SetShields
+        self.energy = energy
+    }
+    
+    var description: String {
+        return "\(action) \(energy)"
     }
 }
 
-struct DropRoverAction {
+struct DropMineAction: PostAction {
+    var action: Actions
     var energy: Int
-    var direction: Direction?   //if nil, set direction to random
     
-    init(withEnergyOf: Int, inDirection: Direction?) {
-        energy = withEnergyOf
-        direction = inDirection
+    init(energy: Int) {
+        action = .DropMine
+        self.energy = energy
+    }
+    
+    var description: String {
+        return "\(action) \(energy)"
     }
 }
 
-struct FireMissileAction {
-    var type = Actions.FireMissile
-    var coords: Int
-    var storedEnergy: Int
+struct DropRoverAction: PostAction {
+    let action: Actions
+    let energy: Int
+    let direction: Direction?
     
-    init(coords: Int, storedEnergy: Int) {
+    init(energy: Int, direction: Direction?) {
+        action = .DropRover
+        self.energy = energy
+        self.direction = direction
+    }
+    
+    var description: String {
+        return "\(action) \(energy) \(String(describing: direction))"
+    }
+}
+
+struct FireMissileAction: PostAction {
+    let action: Actions
+    let coords: Int
+    let energy: Int
+    
+    init(coords: Int, energy: Int) {
+        action = .FireMissile
         self.coords = coords
-        self.storedEnergy = storedEnergy
+        self.energy = energy
+    }
+    
+    var description: String {
+        return "\(action) \(coords) \(energy)"
     }
 }
 
-struct MoveAction {
-    var direction: Direction
-    var distance: Int
+struct MoveAction: PostAction {
+    let action: Actions
+    let distance: Int
+    let direction: Direction
     
-    init(inDirection: Direction, withDistance: Int) {
-        direction = inDirection
-        if withDistance >= 0 && withDistance <= 3 {
-            distance = withDistance
-        } else {
-            logger.warning("Invalid Action: Unable to move game object less than zero spaces or more than three")
-            distance = 0
-        }
+    init(distance: Int, direction: Direction) {
+        action = .Move
+        self.distance = distance
+        self.direction = direction
+    }
+    var description: String {
+        return "\(action) \(distance) \(direction)"
     }
 }

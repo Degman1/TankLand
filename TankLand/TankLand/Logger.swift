@@ -10,9 +10,15 @@ import Foundation
 
 struct Logger {     //create a simple logger
     var loggingInfo = ""
+    var majorLoggers: [GameObject]
     
     init() {
-        print("Initializing logger")
+        majorLoggers = []
+    }
+    
+    mutating func addMajorLogger(gameObject: GameObject, message: String) {
+        majorLoggers.append(gameObject)
+        log("\(gameObject.id): \(message)")
     }
     
     func displayLogger() -> String {

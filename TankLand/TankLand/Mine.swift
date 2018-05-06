@@ -10,12 +10,7 @@ import Foundation
 
 //can also use mines as missiles, so instead of placing them on the location of the tank that is placing it, send it directly to the target position
 class Mine: GameObject {
-     init(initialCoords: Position) {
-        super.init(name: "\(GameObjectType.mine)", initialCoords: initialCoords)
-        type = GameObjectType.mine
-    }
-    
-    func setEnergy(_ energyAmount: Int) {
-        energy = energyAmount
+     init(id: String, row: Int, col: Int, energy: Int, instructions: String) {
+        super.init(row: row, col: col, objectType: .mine, energy: energy, id: id)
     }
 }

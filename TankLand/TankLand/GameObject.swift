@@ -10,16 +10,13 @@ import Foundation
 
 class GameObject: CustomStringConvertible {
     let objectType: GameObjectType
-    let name: String
     private (set) var energy: Int = 0
-    var coords: Position
     var alive: Bool = true    //turn false once energy <= 0
-    let id: Int
+    let id: String
     private (set) var position: Position
     
-    init(row: Int, col: Int, objectType: GameObjectType, name: String, energy: Int, id: String) {
+    init(row: Int, col: Int, objectType: GameObjectType, energy: Int, id: String) {
         self.objectType = objectType
-        self.name = name
         self.energy = energy
         self.id = id
         self.position = Position(row, col)
@@ -30,7 +27,7 @@ class GameObject: CustomStringConvertible {
     }
     
     final func useEnergy(amount: Int) {
-        energy ? (amount > energy) ? 0: energy -= amount
+        energy = (amount > energy) ? 0 : energy - amount
     }
     
     final func setPosition(newPosition: Position) {
@@ -38,6 +35,6 @@ class GameObject: CustomStringConvertible {
     }
     
     var description: String {
-        return "\(objectType) \(name) \(energy) \(id) \(position) "
+        return "\(objectType) \(id) \(energy) \(position) "
     }
 }
