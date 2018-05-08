@@ -26,8 +26,29 @@ extension TankWorld {    //extends tankland class, this is where the helper func
     
     func isGoodIndex(row: Int, col: Int) -> Bool {
         if row <= 15 && col <= 15 {
-            return true} else {
-            return false}
+            return true}
+        return false
     }
     
+    func isValidPosition(_ Position: Position)->Bool {
+        if isGoodIndex(row: Position.x, col: Position.y) {
+            return true}
+        return false
+    }
+    
+    func isPositionEmpty(_ Position: Position)->Bool{
+        if getGO(coords: Position) == nil {
+            return true}
+        return false
+    }
+    
+    func isDead(_ gameObject: GameObject)->Bool {
+        if gameobject.energy <= 0 {
+            return true}
+        return false
+    }
+    
+    func randomizeGameObjects<T: GameObject>(gameObjects: [T])->[T] {
+        
+    }
 }
