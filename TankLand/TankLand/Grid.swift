@@ -17,36 +17,52 @@ struct Grid: CustomStringConvertible {
         grid = Array(repeating: Array(repeating: nil, count: size), count: size)
     }
     
-    func isGoodIndex(_ coords: Position) {
-        assert(coords.x >= 0 && coords.x < size, "Row index \(coords) out of range for GO operation on Grid")
-        assert(coords.y >= 0 && coords.y < size, "Column index \(coords) out of range for GO operation on Grid")
+    func isGoodIndex(row: Int, col: Int) -> Bool {
+        if row <= 14 && row >= 0 && col >= 0 && col <= 14 {
+            return true
+        }
+        return false
+        print("bad index")
+    }
+    
+    func isValidPosition(_ Position: Position)->Bool {
+        if isGoodIndex(row: Position.x, col: Position.y) {
+            return true}
+        return false
     }
     
     //create a tank on the grid
     mutating func generateGO(GO: GameObject, coords: Position) {
-        isGoodIndex(coords)     //assertions to make sure the GO location is in the grid
-        grid[coords.y][coords.x] = GO
-        logger.log("Game Object '\(GO.id)' at position \(coords) has been generated")
+        if isValidPosition(coords) {
+            grid[coords.y][coords.x] = GO
+            print("Game Object '\(GO.id)' at position \(coords) has been generated")
+        }
     }
     
     //create a tank on the grid
     mutating func generateGO_rand(GO: GameObject) {
         let coords = Position.getRandomCoords()
         grid[coords.y][coords.x] = GO
-        logger.log("Game Object '\(GO.id)' at position \(coords) has been generated")
+        print("Game Object '\(GO.id)' at position \(coords) has been generated")
     }
     
     //remove a tank from the grid
     mutating func destroyGO(GO: GameObject, coords: Position) {
-        isGoodIndex(coords)
-        grid[coords.y][coords.x] = nil
-        logger.log("Game Object '\(GO.id)' at position \(coords) has been destroyed")
+        if isValidPosition(coords) {
+            grid[coords.y][coords.x] = nil
+            print("Game Object '\(GO.id)' at position \(coords) has been destroyed")
+        }
     }
     
     //find the contents of a given location
     func getGO(coords: Position) -> GameObject? {
-        isGoodIndex(coords)
-        return grid[coords.y][coords.x]
+        if isValidPosition(coords) {
+            return grid[coords.y][coords.x]
+        }
+    }
+    
+    func findAllGameObjects() -> [GameObject] {
+        
     }
     
     //create a display of the grid for interface purposes
