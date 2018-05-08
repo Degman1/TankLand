@@ -9,32 +9,20 @@
 import Foundation
 
 struct Logger {     //create a simple logger
-    var loggingInfo = ""
+    var loggingInfo: String
     var majorLoggers: [GameObject]
     
     init() {
+        loggingInfo = ""
         majorLoggers = []
     }
     
     mutating func addMajorLogger(gameObject: GameObject, message: String) {
         majorLoggers.append(gameObject)
-        log("\(gameObject.id): \(message)")
+        log(message: "\(gameObject.id): \(message)")
     }
     
-    func displayLogger() -> String {
-        print(loggingInfo)
-        return loggingInfo
-    }
-    
-    mutating func log(_ message: String) {
+    mutating func log(message: String) {
         loggingInfo += "\(message)\n"
-    }
-    
-    mutating func warning(_ message: String) {
-        loggingInfo += "⚠️\(message)⚠️\n"
-    }
-    
-    mutating func error(_ message: String) {
-        loggingInfo += "💥💥\(message)💥💥\n"
     }
 }

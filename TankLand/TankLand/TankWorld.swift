@@ -65,7 +65,7 @@ class TankWorld {
             break   //main while loop for the game
         }
         
-        print("****Winner is...\(lastLivingTank!)")
+        print("****Winner is...\(lastLivingTank!)****")
     }
 }
 

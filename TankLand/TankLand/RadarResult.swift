@@ -38,8 +38,8 @@ struct RadarResult {
                 }
             }
         }
-        logger.log("\nresults of radar:")
-        logger.log("\(result)")
+        print("\nresults of radar:")
+        print("\(result)")
         return result
     }
 }
