@@ -15,8 +15,7 @@ struct Position: CustomStringConvertible, Hashable {
     
     init(_ x: Int, _ y: Int, gridSize: Int = Constants.gridSize) {
         self.x = x
-        origy = y
-        self.y = gridSize - y - 1     //convert from game coords ((0, 0) being bottom left) to array coords for the grid ((0, 0) being bottom left)
+        self.y = y
     }
     
     //return a set of random coords

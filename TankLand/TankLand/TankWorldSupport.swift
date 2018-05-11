@@ -32,85 +32,76 @@ extension TankWorld {    //extends tankland class, this is where the helper func
     
     func isValidPosition(_ Position: Position)->Bool {
         if isGoodIndex(row: Position.x, col: Position.y) {
-            return true}
+            return true
+        }
         return false
     }
     
     func isPositionEmpty(_ position: Position)->Bool{
-        if getGO(coords: position) == nil {
-            return true}
+        if grid.getGO(coords: position) == nil {
+            return true
+        }
         return false
     }
     
     func isDead(_ gameObject: GameObject)->Bool {
-        if gameobject.energy <= 0 {
-            return true}
+        if gameObject.energy <= 0 {
+            return true
+        }
         return false
     }
     
     func randomizeGameObjects<T: GameObject>(gameObjects: [T])->[T] {
-        
+        return gameObjects  //TODO: randomize the array
     }
     
-    func findGameObjectsWithinRange(_ position: Position, range: Int)->[Position]{
-        var radar = RadarResult(origin: position, distance: range)
-        for (x,y) in radar.runRadar() {
-            return x
+    func findGameObjectsWithinRange(_ position: Position, range: Int) -> [Position]{
+        var radar = RadarResult(gameGrid: grid, origin: position, distance: range)
+        return radar.runRadar().map({$0.key})
+    }
+    
+    func findAllGameObjects() -> [GameObject] {
+        var radar = RadarResult(gameGrid: grid, origin: Position(7, 7), distance: 7)
+        return radar.runRadar().map({$0.value})
+    }
+    
+    func findAllTanks() -> [Tank] {
+        var radar = RadarResult(gameGrid: grid, origin: Position(7, 7), distance: 7)
+        var result = radar.runRadar().map({$0.value}).filter({$0 == .tank})
+    }
+    
+    func findAllRovers() -> [Mine]{
+        var radar = RadarResult(gameGrid: grid, origin: Position(7, 7), distance: 7)
+        var result = radar.runRadar().map({$0.value}).filter({$0 == .mine})
+    }
+    
+    func findFreeAdjacent(_ position: Position) -> Position? {
+        var radar = RadarResult(gameGrid: grid, origin: position, distance: 1)
+        let results = radar.runRadar()
+        for (pos, go) in results {
+            return pos
         }
+        return nil
     }
     
-    func findAllGameObjects()->[GameObjects]{
-        var radar = RadarResult(distance: 14)
-        for (x,y) in radar.runRadar() {
-            return y
+    func makeOffSetPosition(position: Position, offSetRow: Int, offSetCol: Int) -> Position?{
+        let newPosition = Position(position.x + offSetRow, position.origy + offSetCol)
+        if isPositionEmpty(newPosition) {
+            return newPosition
         }
+        return nil
     }
     
-    func findAllTanks()->[Tank]{
-        //.filter findAllGameObjects for tanks
-    }
-    
-    func findAllRovers()->[Mine]{
-         //.filter findAllGameObjects for rovers
-    }
-    
-    func surroundings(_ position: Position)->[Position]{
-        var array: [Position] = []
-        array.append(Position(position.x, position.y+1)
-        array.append(Position(position.x+1, position.y+1)
-        array.append(Position(position.x+1, position.y)
-        array.append(Position(position.x+1, position.y-1)
-        array.append(Position(position.x, position.y-1)
-        array.append(Position(position.x-1, position.y-1)
-        array.append(Position(position.x-1, position.y)
-        array.append(Position(position.x-1, position.y+1)
-    }
-    
-    func findFreeAdjacent(_ position: Position)->Position?{
-      for x in surroundings(position) {
-          if getGO(coords: x) == nil{
-              return x!}
-      }
-    }
-    
-    func makeOffSetPosition(position: Position, offSetRow: Int, offSetCol: Int)->Position?{
-      let newPosition = Position(position.x+offSetRow, position.y+offSetCol)
-      if isPositionEmpty(newPosition){
-      return newPosition
-    }
-      return nil
-    }
-    
-    func getLegalSurroundingPositions(_ position: Position)->[Position]{
+    func getLegalSurroundingPositions(_ position: Position)-> [Position] {
         var array: [Position] = []
         for positions in surroundings(position) {
-         if positions.x >=0 && positions.x <=14 && positions.y >=0 && positions.y <=14{
-          array.append(Position)   
-         }
+            if positions.x >= 0 && positions.x <= 14 && positions.y >= 0 && positions.y <= 14{
+                array.append(Position)
+            }
         }
         return array
     }
-                     
+
     func getRandomDirection()->Direction{
      //didnt you already make this   
     }

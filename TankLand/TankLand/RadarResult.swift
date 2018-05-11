@@ -21,25 +21,36 @@ struct RadarResult {
         radarResult = Grid(size: (distance * 2) + 1)
     }
     
-    mutating func runRadar() -> [Position: GameObjectType] {
+    mutating func runRadar() -> RadarInfo {
         print("running radar...")
-        var result: [Position: GameObjectType] = [:]
+        var result: RadarInfo
         
         for row in -distance...distance {
             for col in -distance...distance {
                 if (origin.x + col < gameGrid.size) && (origin.x + col >= 0) && (origin.origy + row < gameGrid.size) && (origin.origy + row >= 0) && ((row != 0) || (col != 0)), let GO = gameGrid.getGO(coords: Position(origin.x + col, origin.origy + row)) {
 
                     //if all the coordinates are in boundsof the game grid, then try to unwrap the GO and if it is there, add it to the radarResult grid:
-                    result[Position(origin.x + col, origin.y - row)] = GO.objectType      //using origy instead of y b/c Position will redo the coordinate shift and I don't want the new shifted version reverted
-                    //only works when you subtract the row. I think this is b/c it loops from the bottom left to top right, and the coordinates go in the other direction, so flipping the row reverses origin looping point
-                    
-                    //radarResult.generateGO(GO: GO, coords: Position(col + distance, row + distance, gridSize: radarResult.size)) --- use this if want to create new grid based off radar results -- remember to input new grid size
-                    
+                    //result[Position(origin.x + col, origin.y - row)] = GO.objectType
+                    result = RadarInfo(id: GO.id, energy: GO.energy, type: GO.objectType, position: GO.position)
                 }
             }
         }
         print("\nresults of radar:")
         print("\(result)")
         return result
+    }
+}
+
+struct RadarInfo {
+    let id: String
+    let energy: Int
+    let type: GameObjectType
+    let position: Position
+    
+    init(id: String, energy: Int, type: GameObjectType, position: Position) {
+        self.id = id
+        self.energy = energy
+        self.type = type
+        self.position = position
     }
 }
