@@ -9,7 +9,6 @@
 import Foundation
 
 struct Position: CustomStringConvertible, Hashable {
-    let origy: Int
     let x: Int  //don't change it in conversion, so don't need origx
     let y: Int
     
@@ -20,7 +19,11 @@ struct Position: CustomStringConvertible, Hashable {
     
     //return a set of random coords
     static func getRandomCoords() -> Position {
-        return Position(Int(arc4random_uniform(UInt32(Constants.gridSize))), Int(arc4random_uniform(UInt32(Constants.gridSize))))
+        return Position(getRandomNumber(range: Constants.gridSize), getRandomNumber(range: Constants.gridSize))
+    }
+    
+    static func getRandomDirection() -> Direction {
+        return Direction(rawValue: getRandomNumber(range: 7))!
     }
     
     func pair(_ a: Int, _ b: Int) -> Int {
@@ -36,6 +39,6 @@ struct Position: CustomStringConvertible, Hashable {
     }
     
     var description: String {
-        return "(\(x), \(y) (\(origy)))"
+        return "(\(x), \(y))"
     }
 }

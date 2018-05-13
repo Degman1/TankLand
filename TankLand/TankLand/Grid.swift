@@ -21,8 +21,8 @@ struct Grid: CustomStringConvertible {
         if row <= 14 && row >= 0 && col >= 0 && col <= 14 {
             return true
         }
-        return false
         print("bad index")
+        return false
     }
     
     func isValidPosition(_ Position: Position)->Bool {
@@ -54,15 +54,30 @@ struct Grid: CustomStringConvertible {
         }
     }
     
+    mutating func moveGO(GO: GameObject, newCoords: Position) {
+        if isValidPosition(GO.position) && isValidPosition(newCoords) && !isPositionEmpty(newCoords) {
+            destroyGO(GO: GO, coords: GO.position)
+            generateGO(GO: GO, coords: newCoords)
+            GO.setPosition(newPosition: newCoords)
+            print("GO \(GO) moved to position \(GO.position)")
+        } else {
+            print("invalid coordinates for moving GO")
+        }
+    }
+    
     //find the contents of a given location
     func getGO(coords: Position) -> GameObject? {
         if isValidPosition(coords) {
             return grid[coords.y][coords.x]
         }
+        return nil
     }
     
-    func findAllGameObjects() -> [GameObject] {
-        
+    func isPositionEmpty(_ position: Position) -> Bool{
+        if getGO(coords: position) == nil {
+            return true
+        }
+        return false
     }
     
     //create a display of the grid for interface purposes

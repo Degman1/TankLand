@@ -21,17 +21,17 @@ struct RadarResult {
         radarResult = Grid(size: (distance * 2) + 1)
     }
     
-    mutating func runRadar() -> RadarInfo {
+    mutating func runRadar() -> [ObjectInfo] {
         print("running radar...")
-        var result: RadarInfo
+        var result = [ObjectInfo]()
         
         for row in -distance...distance {
             for col in -distance...distance {
-                if (origin.x + col < gameGrid.size) && (origin.x + col >= 0) && (origin.origy + row < gameGrid.size) && (origin.origy + row >= 0) && ((row != 0) || (col != 0)), let GO = gameGrid.getGO(coords: Position(origin.x + col, origin.origy + row)) {
+                if (origin.x + col >= 0) && (origin.x + col < gameGrid.size) && (origin.y + row >= 0) && (origin.y + row < gameGrid.size) && (row != 0 || col != 0), let GO = gameGrid.getGO(coords: Position(origin.x + col, origin.y + row)) {
 
                     //if all the coordinates are in boundsof the game grid, then try to unwrap the GO and if it is there, add it to the radarResult grid:
                     //result[Position(origin.x + col, origin.y - row)] = GO.objectType
-                    result = RadarInfo(id: GO.id, energy: GO.energy, type: GO.objectType, position: GO.position)
+                    result.append(ObjectInfo(id: GO.id, energy: GO.energy, type: GO.objectType, position: GO.position))
                 }
             }
         }
@@ -39,9 +39,23 @@ struct RadarResult {
         print("\(result)")
         return result
     }
+    
+    mutating func runRadar_game() -> [GameObject] {  //ONLY for game use, NOT for tank actions!
+        print("running radar...")
+        var result = [GameObject]()
+        
+        for row in -distance...distance {
+            for col in -distance...distance {
+                if (origin.x + col >= 0) && (origin.x + col < gameGrid.size) && (origin.y + row >= 0) && (origin.y + row < gameGrid.size) && (row != 0 || col != 0), let GO = gameGrid.getGO(coords: Position(origin.x + col, origin.y + row)) {
+                    result.append(GO)
+                }
+            }
+        }
+        return result
+    }
 }
 
-struct RadarInfo {
+struct ObjectInfo: CustomStringConvertible {
     let id: String
     let energy: Int
     let type: GameObjectType
@@ -52,5 +66,9 @@ struct RadarInfo {
         self.energy = energy
         self.type = type
         self.position = position
+    }
+    
+    var description: String {
+        return("\(id): \(position)")
     }
 }

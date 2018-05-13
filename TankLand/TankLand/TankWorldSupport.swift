@@ -51,80 +51,67 @@ extension TankWorld {    //extends tankland class, this is where the helper func
         return false
     }
     
-    func randomizeGameObjects<T: GameObject>(gameObjects: [T])->[T] {
+    func randomizeGameObjects<T: GameObject>(gameObjects: [T]) -> [T] {
         return gameObjects  //TODO: randomize the array
     }
     
-    func findGameObjectsWithinRange(_ position: Position, range: Int) -> [Position]{
+    func findGameObjectsWithinRange(_ position: Position, range: Int) -> [ObjectInfo] {
         var radar = RadarResult(gameGrid: grid, origin: position, distance: range)
-        return radar.runRadar().map({$0.key})
+        return radar.runRadar()
     }
     
-    func findAllGameObjects() -> [GameObject] {
+    func findAllGameObjects() -> [GameObject] { //only for game use not tank actions -- not located in grid struct b/c radarresult needs a grid
         var radar = RadarResult(gameGrid: grid, origin: Position(7, 7), distance: 7)
-        return radar.runRadar().map({$0.value})
+        return radar.runRadar_game()
     }
     
-    func findAllTanks() -> [Tank] {
-        var radar = RadarResult(gameGrid: grid, origin: Position(7, 7), distance: 7)
-        var result = radar.runRadar().map({$0.value}).filter({$0 == .tank})
+    func findAllTanks() -> [Tank] { //only for game use not tank actions
+        return findAllGameObjects().filter({$0.objectType == GameObjectType.tank}) as! [Tank]
     }
     
-    func findAllRovers() -> [Mine]{
-        var radar = RadarResult(gameGrid: grid, origin: Position(7, 7), distance: 7)
-        var result = radar.runRadar().map({$0.value}).filter({$0 == .mine})
+    func findAllRovers() -> [Mine] {
+        return findAllGameObjects().filter({$0.objectType == GameObjectType.mine}) as! [Mine]
     }
     
-    func findFreeAdjacent(_ position: Position) -> Position? {
-        var radar = RadarResult(gameGrid: grid, origin: position, distance: 1)
-        let results = radar.runRadar()
-        for (pos, go) in results {
-            return pos
-        }
-        return nil
-    }
-    
-    func makeOffSetPosition(position: Position, offSetRow: Int, offSetCol: Int) -> Position?{
-        let newPosition = Position(position.x + offSetRow, position.origy + offSetCol)
+    func makeOffSetPosition(position: Position, offSetRow: Int, offSetCol: Int) -> Position? {
+        let newPosition = Position(position.x + offSetRow, position.y + offSetCol)
         if isPositionEmpty(newPosition) {
             return newPosition
         }
         return nil
     }
     
-    func getLegalSurroundingPositions(_ position: Position)-> [Position] {
-        var array: [Position] = []
-        for positions in surroundings(position) {
-            if positions.x >= 0 && positions.x <= 14 && positions.y >= 0 && positions.y <= 14{
-                array.append(Position)
+    func getLegalSurroundingPositions(_ position: Position) -> [Position] {
+        var surroundings = [Position]()
+        for row in -1...1 {
+            for col in -1...1 {
+                if let k = makeOffSetPosition(position: position, offSetRow: row, offSetCol: col) {
+                    surroundings.append(k)
+                }
             }
         }
-        return array
+        return surroundings
     }
-
-    func getRandomDirection()->Direction{
-     //didnt you already make this   
+    
+    func findFreeAdjacent(_ position: Position) -> Position? {
+        let surroundings = getLegalSurroundingPositions(position)
+        return surroundings == [] ? nil : surroundings[getRandomNumber(range: 8)]
     }
                      
-    func isEnergyAvailable(_ gameObject: GameObject, amount: Int)->Bool{
-     if gameObject.energy - amount > 0  {
-         return true}
+    func isEnergyAvailable(_ gameObject: GameObject, amount: Int) -> Bool {
+        if gameObject.energy - amount > 0  {
+            return true
+        }
         return false
     }
-                     
-    func findWinner()->Tank{
-        //use findalltanks then loop through their energies until only one is left
+
+    func findWinner() -> Tank {
+        return findAllTanks()[0]
     }
-                     
-   func distance(_ p1: Position, _ p2: Position)->Int{
-   return sqrt((p2.x-p1.x)*(p2.x-p1.x)+(p2.y-p1.y)*(p2.y-p1.y))
+    
+    func distance(_ p1: Position, _ p2: Position) -> Int {
+        let diffx = p2.x - p1.x
+        let diffy = p2.y - p1.y
+        return Int( sqrt( Double((diffx) * (diffx) + (diffy) * (diffy))) )
    }
 }
-
-
-
-
-
-
-
-

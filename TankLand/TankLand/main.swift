@@ -14,27 +14,27 @@ print("Hello World")
 
 // RadarResult testing:
  
-/*var GOs: [GameObject] = []
+var GOs: [GameObject] = []
 
 var grid = Grid()
-var j1 = Tank(id: "1", row: 1, col: 1, energy: Constants.initialTankEnergy, instructions: "")
+var j1 = Tank(id: "tank 1", row: 0, col: 0, energy: Constants.initialTankEnergy, instructions: "")
 GOs.append(j1)
 grid.generateGO(GO: j1, coords: j1.position)
 
-var j2 = Tank(id: "2", row: 1, col: 2, energy: Constants.initialTankEnergy, instructions: "")
+var j2 = Tank(id: "tank 2", row: 1, col: 2, energy: Constants.initialTankEnergy, instructions: "")
 GOs.append(j2)
 grid.generateGO(GO: j2, coords: j2.position)
 
-var j3 = Tank(id: "3", row: 0, col: 1, energy: Constants.initialTankEnergy, instructions: "")
+var j3 = Tank(id: "tank 3", row: 0, col: 1, energy: Constants.initialTankEnergy, instructions: "")
 GOs.append(j3)
 grid.generateGO(GO: j3, coords: j3.position)
 
-logger.log("\(grid)")
-var radar1 = RadarResult(gameGrid: grid, origin: j1.position, distance: 2)
+print("\(grid)")
+var radar1 = RadarResult(gameGrid: grid, origin: j1.position, distance: 1)
 let radarResult = radar1.runRadar()
 
-let output = logger.displayLogger()
-*/
+//let output = logger.displayLogger()
+
 /*
 // Basic Grid Operation Testing:
  

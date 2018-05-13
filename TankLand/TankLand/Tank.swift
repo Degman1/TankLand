@@ -10,7 +10,7 @@ import Foundation
 
 class Tank: GameObject {
     private (set) var shields: Int = 0
-    private var radarResults: [RadarResult]?
+    private var radarResults = [ObjectInfo]()
     private var receivedMessage: String?
     private (set) var preActions = [Actions: PreAction]()
     private (set) var postActions = [Actions: PostAction]()
@@ -46,7 +46,7 @@ class Tank: GameObject {
     
     final func setShields(amount: Int) {shields = amount}
     
-    final func setRadarResult(radarResults: [RadarResult]!) {
+    final func setRadarResult(radarResults: [ObjectInfo]) {
         self.radarResults = radarResults
     }
     

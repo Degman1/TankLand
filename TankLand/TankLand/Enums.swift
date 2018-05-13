@@ -14,8 +14,8 @@ enum GameObjectType {
 }
 
 //relative location directions:
-enum Direction {
-    case N, NE, E, SE, S, SW, W, NW
+enum Direction: Int {
+    case N = 1, NE, E, SE, S, SW, W, NW
 }
 
 enum Actions {
