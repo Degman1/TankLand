@@ -10,6 +10,11 @@ import Foundation
 
 extension TankWorld {    //extends tankland class, this is where the helper functions go
     
+    func nextTurn() {
+        turn += 1
+        logger.turn += 1
+    }
+    
     func newPosition (position: Position, direction: Direction, magnitude: Int) -> Position {
         switch (direction) {
         case Direction.N : return Position(position.x, position.y + magnitude)
@@ -21,7 +26,6 @@ extension TankWorld {    //extends tankland class, this is where the helper func
         case Direction.W : return Position(position.x - magnitude, position.y)
         case Direction.NW : return Position(position.x - magnitude, position.y + magnitude)
         }
-        
     }
     
     func isGoodIndex(row: Int, col: Int) -> Bool {
@@ -49,6 +53,29 @@ extension TankWorld {    //extends tankland class, this is where the helper func
             return true
         }
         return false
+    }
+    
+    func applyCost(_ tank: Tank, amount: Int) {
+            let startEnergy = tank.energy
+            tank.useEnergy(amount: amount - tank.shields)
+            logger.addLog(gameObject: tank, message: "Energy drop from \(startEnergy) to \(tank.energy)")
+    }
+    
+    func applyDamage(_ go: GameObject, amount: Int) {
+        var shieldEnergy = 0
+        if go.objectType == .tank {
+            shieldEnergy = (go as! Tank).shields
+            if amount <= shieldEnergy {
+                logger.addLog(gameObject: go, message: "Shields hold, no damage done")
+            } else {
+                let startEnergy = go.energy
+                go.useEnergy(amount: amount - shieldEnergy)
+                logger.addLog(gameObject: go, message: "Shields breached. Tank energy reduced from \(startEnergy) to \(go.energy)")
+                logger.addLog(gameObject: go, message: "Energy drop from \(startEnergy) to \(go.energy)")
+            }
+        } else {
+            go.useEnergy(amount: amount)
+        }
     }
     
     func randomizeGameObjects<T: GameObject>(gameObjects: [T]) -> [T] {
@@ -112,6 +139,6 @@ extension TankWorld {    //extends tankland class, this is where the helper func
     func distance(_ p1: Position, _ p2: Position) -> Int {
         let diffx = p2.x - p1.x
         let diffy = p2.y - p1.y
-        return Int( sqrt( Double((diffx) * (diffx) + (diffy) * (diffy))) )
-   }
+        return Int( sqrt( Double((diffx) * (diffx) + (diffy) * (diffy))) )  //will round to be correct
+    }
 }

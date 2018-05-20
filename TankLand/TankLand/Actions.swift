@@ -1,5 +1,5 @@
 //
-//  FireMissileAction.swift
+//  Action.swift
 //  TankLand
 //
 //  Created by David Gerard on 4/29/18.
@@ -25,110 +25,6 @@ protocol PostAction: Action {
 
 //action structs:
 
-struct SendMessageAction: PreAction {
-    var action: Actions
-    var message: String
-    var code: String
-    
-    init(message: String, code: String) {
-        action = .SendMessage
-        self.message = message
-        self.code = code
-    }
-    
-    var description: String {
-        return "\(action) \(code)"
-    }
-}
-
-struct RecieveMessageAction: PreAction {
-    var action: Actions
-    var code: String
-    
-    init(message: String, code: String) {
-        action = .ReciveMessage
-        self.code = code
-    }
-    
-    var description: String {
-        return "\(action) \(code)"
-    }
-}
-
-struct RunRadarAction: PreAction {
-    var action: Actions
-    var distance: Int
-    
-    init(distance: Int) {
-        action = .RunRadar
-        self.distance = distance
-    }
-    
-    var description: String {
-        return "\(action) \(distance)"
-    }
-}
-
-struct SetShieldAction: PreAction {
-    var action: Actions
-    var energy: Int
-    
-    init(energy: Int) {
-        action = .SetShields
-        self.energy = energy
-    }
-    
-    var description: String {
-        return "\(action) \(energy)"
-    }
-}
-
-struct DropMineAction: PostAction {
-    var action: Actions
-    var energy: Int
-    
-    init(energy: Int) {
-        action = .DropMine
-        self.energy = energy
-    }
-    
-    var description: String {
-        return "\(action) \(energy)"
-    }
-}
-
-struct DropRoverAction: PostAction {
-    let action: Actions
-    let energy: Int
-    let direction: Direction?
-    
-    init(energy: Int, direction: Direction?) {
-        action = .DropRover
-        self.energy = energy
-        self.direction = direction
-    }
-    
-    var description: String {
-        return "\(action) \(energy) \(String(describing: direction))"
-    }
-}
-
-struct FireMissileAction: PostAction {
-    let action: Actions
-    let coords: Int
-    let energy: Int
-    
-    init(coords: Int, energy: Int) {
-        action = .FireMissile
-        self.coords = coords
-        self.energy = energy
-    }
-    
-    var description: String {
-        return "\(action) \(coords) \(energy)"
-    }
-}
-
 struct MoveAction: PostAction {
     let action: Actions
     let distance: Int
@@ -141,5 +37,101 @@ struct MoveAction: PostAction {
     }
     var description: String {
         return "\(action) \(distance) \(direction)"
+    }
+}
+
+struct ShieldAction: PreAction {
+    let action: Actions
+    let power: Int
+    
+    init(power: Int) {
+        action = .Shields
+        self.power = power
+    }
+    
+    var description: String {
+        return "\(action) \(power)"
+    }
+}
+
+struct MissileAction: PostAction {
+    let action: Actions
+    let power: Int
+    let target: Position
+    
+    init(power: Int, target: Position) {
+        action = .Missile
+        self.power = power
+        self.target = target
+    }
+    
+    var description: String {
+        return "\(action) \(power) \(target)"
+    }
+}
+
+struct RadarAction: PreAction {
+    let action: Actions
+    let range: Int
+    
+    init(range: Int) {
+        action = .Radar
+        self.range = range
+    }
+    
+    var description: String {
+        return "\(action) \(range)"
+    }
+}
+
+struct SendMessageAction: PreAction {
+    let action: Actions
+    let key: String
+    let message: String
+    
+    init(key: String, message: String) {
+        action = .SendMessage
+        self.key = key
+        self.message = message
+    }
+    
+    var description: String {
+        return "\(action) \(key) \(message)"
+    }
+}
+
+struct ReceiveMessageAction: PreAction {
+    let action: Actions
+    let key: String
+    
+    init(key: String) {
+        action = .ReceiveMessage
+        self.key = key
+    }
+    
+    var description: String {
+        return "\(action) \(key)"
+    }
+}
+
+struct DropMineAction: PostAction {
+    let action: Actions
+    let isRover: Bool
+    let power: Int
+    let dropDirection: Direction?
+    let moveDirection: Direction?
+    
+    init(power: Int, isRover: Bool = false, dropDirection: Direction? = nil, moveDirection: Direction? = nil) {
+        action = .DropMine
+        self.isRover = isRover
+        self.dropDirection = dropDirection
+        self.moveDirection = moveDirection
+        self.power = power
+    }
+    
+    var description: String {
+        let dropDirectionMessage = (dropDirection == nil) ? "drop direction is random" : "\(dropDirection!)"
+        let moveDirectionMessage = (moveDirection == nil) ? "move direction is random" : "\(moveDirection!)"
+        return "\(action) \(power) \(dropDirectionMessage) \(isRover) \(moveDirectionMessage)"
     }
 }

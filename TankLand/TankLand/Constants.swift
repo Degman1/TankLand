@@ -25,8 +25,8 @@ struct Constants {
     static var costLifeSupportRover = 40
     static var costLifeSupportMine = 20
     static var missleStrikeMultiple = 10
-    static var missleStrikeCollateral = 3
-    static var minStrikeMultiple = 5
+    static var missleStrikeCollateral = 3   //TODO: how is the collateral damage used?
+    static var minStrikeMultiple = 5    //TODO: what is this for??
     static var shieldPowerMultiple = 8
     static var missleStrikeEnergyTransferFraction = 4
 }

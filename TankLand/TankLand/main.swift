@@ -10,7 +10,11 @@ import Foundation
 
 print("Hello World")
 
-//var logger = Logger()
+
+
+
+
+/*//var logger = Logger()
 
 // RadarResult testing:
  
@@ -34,6 +38,8 @@ var radar1 = RadarResult(gameGrid: grid, origin: j1.position, distance: 1)
 let radarResult = radar1.runRadar()
 
 //let output = logger.displayLogger()
+*/
+
 
 /*
 // Basic Grid Operation Testing:

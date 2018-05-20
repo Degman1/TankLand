@@ -21,7 +21,7 @@ struct Grid: CustomStringConvertible {
         if row <= 14 && row >= 0 && col >= 0 && col <= 14 {
             return true
         }
-        print("bad index")
+        //print("bad index")
         return false
     }
     
@@ -35,7 +35,8 @@ struct Grid: CustomStringConvertible {
     mutating func generateGO(GO: GameObject, coords: Position) {
         if isValidPosition(coords) {
             grid[coords.y][coords.x] = GO
-            print("Game Object '\(GO.id)' at position \(coords) has been generated")
+            GO.setPosition(newPosition: coords)
+            //print("Game Object '\(GO.id)' at position \(coords) has been generated")
         }
     }
     
@@ -43,25 +44,26 @@ struct Grid: CustomStringConvertible {
     mutating func generateGO_rand(GO: GameObject) {
         let coords = Position.getRandomCoords()
         grid[coords.y][coords.x] = GO
-        print("Game Object '\(GO.id)' at position \(coords) has been generated")
+        GO.setPosition(newPosition: coords)
+        //print("Game Object '\(GO.id)' at position \(coords) has been generated")
     }
     
     //remove a tank from the grid
-    mutating func destroyGO(GO: GameObject, coords: Position) {
-        if isValidPosition(coords) {
-            grid[coords.y][coords.x] = nil
-            print("Game Object '\(GO.id)' at position \(coords) has been destroyed")
+    mutating func removeGO(GO: GameObject) {
+        if isValidPosition(GO.position) {
+            grid[GO.position.y][GO.position.x] = nil
+            //print("Game Object '\(GO.id)' at position \(coords) has been destroyed")
         }
     }
     
     mutating func moveGO(GO: GameObject, newCoords: Position) {
-        if isValidPosition(GO.position) && isValidPosition(newCoords) && !isPositionEmpty(newCoords) {
-            destroyGO(GO: GO, coords: GO.position)
+        if isValidPosition(newCoords) && !isPositionEmpty(newCoords) {
+            removeGO(GO: GO)
             generateGO(GO: GO, coords: newCoords)
             GO.setPosition(newPosition: newCoords)
-            print("GO \(GO) moved to position \(GO.position)")
+            //print("GO \(GO) moved to position \(GO.position)")
         } else {
-            print("invalid coordinates for moving GO")
+            //print("invalid coordinates for moving GO")
         }
     }
     

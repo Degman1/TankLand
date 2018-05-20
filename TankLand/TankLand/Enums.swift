@@ -10,15 +10,14 @@ import Foundation
 
 //different types of game objects:
 enum GameObjectType {
-    case gameObject, tank, mine, rover
+    case mine, rover, tank
 }
 
 //relative location directions:
 enum Direction: Int {
-    case N = 1, NE, E, SE, S, SW, W, NW
+    case N, NE, E, SE, S, SW, W, NW
 }
 
 enum Actions {
-    case SendMessage, ReciveMessage, RunRadar, SetShields   // pre-actions
-    case DropMine, DropRover, FireMissile, Move                 // actions
+    case Move, Shields, Missile, Radar, SendMessage, ReceiveMessage, DropMine
 }

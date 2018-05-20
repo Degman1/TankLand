@@ -9,20 +9,27 @@
 import Foundation
 
 struct Logger {     //create a simple logger
-    var loggingInfo: String
     var majorLoggers: [GameObject]
+    var turn: Int
     
     init() {
-        loggingInfo = ""
         majorLoggers = []
+        turn = 0
+    }
+    
+    mutating func log(_ message: String) {
+        print(message)
     }
     
     mutating func addMajorLogger(gameObject: GameObject, message: String) {
         majorLoggers.append(gameObject)
-        log(message: "\(gameObject.id): \(message)")
+        addLog(gameObject: gameObject, message: "\(gameObject.id): \(message)")
     }
     
-    mutating func log(message: String) {
-        loggingInfo += "\(message)\n"
+    mutating func addLog(gameObject: GameObject, message: String) {
+        if majorLoggers.contains(where: {$0 === gameObject}) {
+            log("\(turn) \(NSDate()) \(gameObject.id) \(gameObject.position) \(message)")
+        } //use === to compare refernce types
+        else { log("\(turn) \(NSDate()) \(gameObject.id) does not have permission to log") }
     }
 }

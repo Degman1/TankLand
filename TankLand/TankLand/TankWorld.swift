@@ -14,10 +14,10 @@ class TankWorld {
     var grid: Grid = Grid()
     var logger = Logger()
     var turn: Int = 0
-    var livingTanks: [Tank] = []
-    var numberLivingTanks: Int = 0
-    var lastLivingTank: Tank? = nil
-    var gameOver: Bool = false
+    private var livingTanks: [Tank] = []
+    private var numberLivingTanks: Int = 0
+    private var lastLivingTank: Tank? = nil
+    private var gameOver: Bool = false
     
     init() {}
     
@@ -45,9 +45,9 @@ class TankWorld {
     
     func chargeTurnEnergy(_ GOs: [GameObject]) {
         for GO in GOs {
-            if GO.objectType == .tank {GO.useEnergy(amount: Constants.costLifeSupportTank)}
-            if GO.objectType == .mine {GO.useEnergy(amount: Constants.costLifeSupportMine)}
-            if GO.objectType == .rover {GO.useEnergy(amount: Constants.costLifeSupportRover)}
+            if GO.objectType == .tank {applyCost(GO as! Tank, amount: Constants.costLifeSupportTank)}
+            if GO.objectType == .mine {GO.useEnergy(amount: Constants.costLifeSupportMine)} //log this??
+            if GO.objectType == .rover {GO.useEnergy(amount: Constants.costLifeSupportRover)} //log this??
         }
     }
     
@@ -55,69 +55,32 @@ class TankWorld {
         //either random or in direction
     }
     
-    
-    //------------------------------------------------------------------- helper functions to handle actions
-    
-    //pre-action handling
-    
-    func handleSendMessageAction(_ actionInfo: SendMessageAction) {
-        
-    }
-    
-    func handleRecieveMessageAction(_ actionInfo: RecieveMessageAction) {
-        
-    }
-    
-    func handleRunRadarAction(_ tank: Tank, _ actionInfo: RunRadarAction) {
-        tank.setRadarResult(radarResults: findGameObjectsWithinRange(tank.position, range: actionInfo.distance))
-        print("Tank \(tank) ran its radar")
-    }
-    
-    func handleSetShieldsAction(_ tank: Tank, _ actionInfo: SetShieldAction) {
-        tank.setShields(amount: actionInfo.energy)
-        print("Tank \(tank) set its shields")
-    }
-    
-    //post-action handling
-    
-    func handleDropMineAction(_ actionInfo: DropMineAction) {
-        
-    }
-    
-    func handleDropRoverAction(_ actionInfo: DropRoverAction) {
-        
-    }
-    
-    func handleFireMissileAction(_ actionInfo: FireMissileAction) {
-        
-    }
-    
-    func handleMoveAction(_ tank: Tank, _ actionInfo: MoveAction) {
-        grid.moveGO(GO: tank, newCoords: newPosition(position: tank.position, direction: actionInfo.direction, magnitude: actionInfo.distance))
-        print("Tank \(tank) moved its position")
-    }
-    
-    //-------------------------------------------------------------------------------------------------------
-    
     func runPreActions(_ tank: Tank) {
         //order not matter -- QUESTION: How does a tank read anothers message is it tries to send + recieve at the same time? -- only one tank will recieve the other message and the other one won't
         for action in tank.preActions {
             switch action.key {
-            case .SendMessage: handleSendMessageAction(action.value as! SendMessageAction)
-            case.ReciveMessage: handleRecieveMessageAction(action.value as! RecieveMessageAction)
-            case .RunRadar: handleRunRadarAction(tank, action.value as! RunRadarAction)
-            case .SetShields: handleSetShieldsAction(tank, action.value as! SetShieldAction)
+            case .SendMessage: handleSendMessageAction(tank, action.value as! SendMessageAction)
+            case.ReceiveMessage: handleRecieveMessageAction(tank, action.value as! ReceiveMessageAction)
+            case .Radar: handleRunRadarAction(tank, action.value as! RadarAction)
+            case .Shields: handleSetShieldsAction(tank, action.value as! ShieldAction)
             default: print("\(action) is not a pre-action")
             }
         }
     }
     
     func runPostActions(_ tank: Tank) {
-        //1. drop mine/rover    2. launch missile   3. move
-        if tank.postActions[.DropMine] != nil { handleDropMineAction(tank.postActions[.DropMine] as! DropMineAction) }
-        if tank.postActions[.DropRover] != nil { handleDropRoverAction(tank.postActions[.DropRover] as! DropRoverAction) }
-        if tank.postActions[.FireMissile] != nil { handleFireMissileAction(tank.postActions[.FireMissile] as! FireMissileAction) }
-        if tank.postActions[.Move] != nil { handleMoveAction(tank, tank.preActions[.Move] as! MoveAction) }
+        //1. drop mine/rover    2. launch missile   3. move     TODO: is it for each tank in this order, or overall in this order??
+        if let dropMineAction = tank.postActions[.DropMine] {handleDropMineAction(tank, dropMineAction as! DropMineAction)}
+        if let fireMissileAction = tank.postActions[.Missile] {handleFireMissileAction(tank, fireMissileAction as! MissileAction)}
+        if let moveAction = tank.postActions[.Move] { handleMoveAction(tank, moveAction as! MoveAction) }
+    }
+    
+    func removeDeadObjects(gameObjects: [GameObject]) {
+        for gameObject in gameObjects {
+            if isDead(gameObject) {
+                grid.removeGO(GO: gameObject)
+            }
+        }
     }
     
     func doTurn() {
@@ -140,17 +103,22 @@ class TankWorld {
             runPostActions(tank)
         }
         
-        turn += 1
+        removeDeadObjects(gameObjects: allObjects)  //TODO: Do this more often????
+        
+        nextTurn()
     }
     
     func runOneTurn() {
+        logger.log("BEGINNING TURN #\(turn)")
+        logger.log("NLT: \(numberLivingTanks)")
         doTurn()
         print(gridReport())
     }
     
     func driver() {
         populateTankWorld(tanks: livingTanks)
-        print(gridReport())
+        logger.log(gridReport())
+        
         while !gameOver {
             if (numberLivingTanks == 1) {setWinner(lastStandingTank: findWinner()); break}
             runOneTurn()

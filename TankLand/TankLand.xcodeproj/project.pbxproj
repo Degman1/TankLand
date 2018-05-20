@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		631A4A25209E9E9B00ADF245 /* TankWorldSupport.swift in Sources */ = {isa = PBXBuildFile; fileRef = 631A4A24209E9E9B00ADF245 /* TankWorldSupport.swift */; };
 		631A4A27209E9EB700ADF245 /* TankWorldActions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 631A4A26209E9EB700ADF245 /* TankWorldActions.swift */; };
+		634D66A520B20DE600326BF3 /* SampleTank.swift in Sources */ = {isa = PBXBuildFile; fileRef = 634D66A420B20DE600326BF3 /* SampleTank.swift */; };
 		63519DC12078064A00B61A58 /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63519DC02078064A00B61A58 /* main.swift */; };
 		63519DC8207808A300B61A58 /* Tank.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63519DC7207808A300B61A58 /* Tank.swift */; };
 		63519DCA20790D2E00B61A58 /* Grid.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63519DC920790D2E00B61A58 /* Grid.swift */; };
@@ -40,6 +41,7 @@
 /* Begin PBXFileReference section */
 		631A4A24209E9E9B00ADF245 /* TankWorldSupport.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TankWorldSupport.swift; sourceTree = "<group>"; };
 		631A4A26209E9EB700ADF245 /* TankWorldActions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TankWorldActions.swift; sourceTree = "<group>"; };
+		634D66A420B20DE600326BF3 /* SampleTank.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SampleTank.swift; sourceTree = "<group>"; };
 		63519DBD2078064A00B61A58 /* TankLand */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = TankLand; sourceTree = BUILT_PRODUCTS_DIR; };
 		63519DC02078064A00B61A58 /* main.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = main.swift; sourceTree = "<group>"; };
 		63519DC7207808A300B61A58 /* Tank.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Tank.swift; sourceTree = "<group>"; };
@@ -103,6 +105,7 @@
 				6368ACDA207EE4EB00A44C39 /* Enums.swift */,
 				6368ACDC207EE5D800A44C39 /* Constants.swift */,
 				63519DD120790E7000B61A58 /* SupportCode.swift */,
+				634D66A420B20DE600326BF3 /* SampleTank.swift */,
 			);
 			path = TankLand;
 			sourceTree = "<group>";
@@ -168,6 +171,7 @@
 				63519DCC20790D5700B61A58 /* GameObject.swift in Sources */,
 				6368ACE3208521A500A44C39 /* Logger.swift in Sources */,
 				63519DD220790E7000B61A58 /* SupportCode.swift in Sources */,
+				634D66A520B20DE600326BF3 /* SampleTank.swift in Sources */,
 				63519DC12078064A00B61A58 /* main.swift in Sources */,
 				63519DC8207808A300B61A58 /* Tank.swift in Sources */,
 				63519DCE20790DC600B61A58 /* Mine.swift in Sources */,
