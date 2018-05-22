@@ -10,7 +10,12 @@ import Foundation
 
 //can also use mines as missiles, so instead of placing them on the location of the tank that is placing it, send it directly to the target position
 class Mine: GameObject {
-    init(type: GameObjectType, id: String, row: Int, col: Int, energy: Int) {
-        super.init(row: row, col: col, objectType: type, energy: energy, id: id)
+    let isRover: Bool
+    let moveDirection: Direction?
+    
+    init(id: String, row: Int, col: Int, energy: Int, isRover: Bool = false, moveDirection: Direction? = nil) {
+        super.init(row: row, col: col, objectType: (isRover == false) ? .mine : .rover, energy: energy, id: id)
+        self.isRover = isRover
+        self.moveDirection = moveDirection
     }
 }
