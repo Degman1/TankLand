@@ -74,7 +74,7 @@ extension TankWorld {    //extends tankland class, this is where the helper func
                 logger.addLog(gameObject: go, message: "Energy drop from \(startEnergy) to \(go.energy)")
             }
         } else {
-            go.useEnergy(amount: amount)
+            go.useEnergy(amount: amount)    //TODO: reset shields after each turn
         }
     }
     
