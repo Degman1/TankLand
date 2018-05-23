@@ -71,10 +71,10 @@ extension TankWorld {   //functions to run and handle actions go here
         let dropPos = newPosition(position: tank.position, direction: (dropMineAction.dropDirection == nil) ? Position.getRandomDirection() : dropMineAction.dropDirection!, magnitude: 1)
         
         if dropMineAction.isRover {
-            let rover = Mine(type: .rover, id: "rover1", row: dropPos.y, col: dropPos.x, energy: dropMineAction.power)    //TODO: what should the id be?
+            let rover = Mine(id: "rover1", row: dropPos.y, col: dropPos.x, energy: dropMineAction.power, isRover: true, moveDirection: dropMineAction.moveDirection)    //TODO: what should the id be?
             grid.generateGO(GO: rover, coords: rover.position)
         } else {
-            let mine = Mine(type: .mine, id: "mine1", row: dropPos.y, col: dropPos.x, energy: dropMineAction.power)    //TODO: what should the id be?
+            let mine = Mine(id: "mine1", row: dropPos.y, col: dropPos.x, energy: dropMineAction.power, isRover: false, moveDirection: dropMineAction.moveDirection)    //TODO: what should the id be?
             grid.generateGO(GO: mine, coords: mine.position)
         }
     }

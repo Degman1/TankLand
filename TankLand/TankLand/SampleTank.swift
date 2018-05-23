@@ -9,8 +9,8 @@
 import Foundation
 
 class SampleTank: Tank {
-    override init(row: Int, col: Int, energy: Int, id: String, instructions: String){
-        super.init(row: row, col: col, energy: energy, id: id, instructions: instructions)
+    override init(id: String, row: Int, col: Int, energy: Int, instructions: String){
+        super.init(id: id, row: row, col: col, energy: energy, instructions: instructions)
     }
     
     func chanceOf (percent: Int)->Bool{
@@ -25,7 +25,10 @@ class SampleTank: Tank {
     }
     
     override func computePostActions(){
-        if (chanceOf(percent: 50)){
+        addPostAction(postAction: MoveAction(distance: 2, direction: .S))
+        super.computePostActions()
+        
+        /*if (chanceOf(percent: 50)){
             let randomDirection = Direction(rawValue: getRandomInt(range: 7))!
             addPostAction(postAction: MoveAction(distance: 2, direction: randomDirection))
         }
@@ -35,6 +38,6 @@ class SampleTank: Tank {
         if (chanceOf(percent: 50)) {return}
         let randomItem = rs[getRandomInt(range: rs.count)]
         let missileEnergy = energy > 20000 ? 1000 : (energy / 20)
-        addPostAction (postAction: MissileAction(power: missileEnergy, target: randomItem.posiition))
+        addPostAction (postAction: MissileAction(power: missileEnergy, target: randomItem.position))*/
     }
 }

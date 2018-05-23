@@ -19,11 +19,11 @@ struct Position: CustomStringConvertible, Hashable {
     
     //return a set of random coords
     static func getRandomCoords() -> Position {
-        return Position(getRandomNumber(range: Constants.gridSize), getRandomNumber(range: Constants.gridSize))
+        return Position(getRandomInt(range: Constants.gridSize), getRandomInt(range: Constants.gridSize))
     }
     
     static func getRandomDirection() -> Direction {
-        return Direction(rawValue: getRandomNumber(range: 7))!
+        return Direction(rawValue: getRandomInt(range: 7))!
     }
     
     func pair(_ a: Int, _ b: Int) -> Int {

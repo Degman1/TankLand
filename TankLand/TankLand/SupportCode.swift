@@ -72,6 +72,6 @@ func fit(_ s: String, _ size: Int, right: Bool = false) -> String {
     return addon + result
 }
 
-func getRandomNumber(range: Int) -> Int {   //goes from 0-range
+func getRandomInt(range: Int) -> Int {   //goes from 0-range
     return Int(arc4random_uniform(UInt32(range)))
 }

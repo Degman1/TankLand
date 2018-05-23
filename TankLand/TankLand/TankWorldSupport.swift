@@ -82,13 +82,13 @@ extension TankWorld {    //extends tankland class, this is where the helper func
         return gameObjects  //TODO: randomize the array
     }
     
-    func findGameObjectsWithinRange(_ position: Position, range: Int) -> [ObjectInfo] {
-        var radar = RadarResult(gameGrid: grid, origin: position, distance: range)
+    func findGameObjectsWithinRange(_ position: Position, range: Int) -> [RadarResult] {
+        var radar = Radar(gameGrid: grid, origin: position, distance: range)
         return radar.runRadar()
     }
     
     func findAllGameObjects() -> [GameObject] { //only for game use not tank actions -- not located in grid struct b/c radarresult needs a grid
-        var radar = RadarResult(gameGrid: grid, origin: Position(7, 7), distance: 7)
+        var radar = Radar(gameGrid: grid, origin: Position(7, 7), distance: 7)
         return radar.runRadar_game()
     }
     
@@ -122,7 +122,7 @@ extension TankWorld {    //extends tankland class, this is where the helper func
     
     func findFreeAdjacent(_ position: Position) -> Position? {
         let surroundings = getLegalSurroundingPositions(position)
-        return surroundings == [] ? nil : surroundings[getRandomNumber(range: 8)]
+        return surroundings == [] ? nil : surroundings[getRandomInt(range: 8)]
     }
                      
     func isEnergyAvailable(_ gameObject: GameObject, amount: Int) -> Bool {

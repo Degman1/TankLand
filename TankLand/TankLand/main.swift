@@ -8,10 +8,20 @@
 
 import Foundation
 
-print("Hello World")
+print("Hello World\n")
 
 
+//whole game testing:
 
+var tankWorld = TankWorld()
+
+var j1 = Tank(id: "tank1", row: 0, col: 0, energy: Constants.initialTankEnergy, instructions: "")
+var j2 = Tank(id: "tank2", row: 1, col: 2, energy: Constants.initialTankEnergy, instructions: "")
+var j3 = SampleTank(id: "SampleTank", row: 5, col: 5, energy: Constants.initialTankEnergy, instructions: "")
+var tanks = [j1, j2, j3]
+tankWorld.populateTankWorld(tanks: tanks)
+
+tankWorld.runOneTurn()
 
 
 /*//var logger = Logger()

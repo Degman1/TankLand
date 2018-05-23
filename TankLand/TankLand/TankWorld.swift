@@ -25,6 +25,7 @@ class TankWorld {
         for tank in tanks {
             addGameObject(gameObject: tank)
         }
+        logger.log("")
     }
     
     func addGameObject(gameObject: GameObject) {
@@ -59,27 +60,36 @@ class TankWorld {
     }
     
     func runPreActions(_ tank: Tank) {
+        tank.computePreActions()
         //order not matter -- QUESTION: How does a tank read anothers message is it tries to send + recieve at the same time? -- only one tank will recieve the other message and the other one won't
         for action in tank.preActions {
             switch action.key {
             case .SendMessage: handleSendMessageAction(tank, action.value as! SendMessageAction)
-            case.ReceiveMessage: handleRecieveMessageAction(tank, action.value as! ReceiveMessageAction)
+                removeDeadObjects()
+            case .ReceiveMessage: handleRecieveMessageAction(tank, action.value as! ReceiveMessageAction)
+                removeDeadObjects()
             case .Radar: handleRunRadarAction(tank, action.value as! RadarAction)
+                removeDeadObjects()
             case .Shields: handleSetShieldsAction(tank, action.value as! ShieldAction)
-            default: print("\(action) is not a pre-action")
+                removeDeadObjects()
+            default: logger.log("\(action) is not a pre-action")
             }
         }
     }
     
     func runPostActions(_ tank: Tank) {
         //1. drop mine/rover    2. launch missile   3. move     TODO: is it for each tank in this order, or overall in this order??
+        tank.computePostActions()
         if let dropMineAction = tank.postActions[.DropMine] {handleDropMineAction(tank, dropMineAction as! DropMineAction)}
+        removeDeadObjects()
         if let fireMissileAction = tank.postActions[.Missile] {handleFireMissileAction(tank, fireMissileAction as! MissileAction)}
+        removeDeadObjects()
         if let moveAction = tank.postActions[.Move] { handleMoveAction(tank, moveAction as! MoveAction) }
+        removeDeadObjects()
     }
     
-    func removeDeadObjects(gameObjects: [GameObject]) {
-        for gameObject in gameObjects {
+    func removeDeadObjects() {
+        for gameObject in findAllGameObjects() {
             if isDead(gameObject) {
                 grid.removeGO(GO: gameObject)
             }
@@ -87,16 +97,16 @@ class TankWorld {
     }
     
     func doTurn() {
-        let allObjects = randomizeGameObjects(gameObjects: findAllGameObjects())
+        let allObjects = randomizeGameObjects(gameObjects: findAllGameObjects())    //TODO: randomize them
         let allRovers = randomizeGameObjects(gameObjects: findAllRovers())
         let allTanks = randomizeGameObjects(gameObjects: findAllTanks())
         //code to run a single turn
         
-        //make sure to check after every energy expending if the GO is dead
-        
         chargeTurnEnergy(allObjects)
+        removeDeadObjects()
         
-        moveRovers(allRovers)
+        moveRovers(allRovers)   //make them actually blow up
+        removeDeadObjects()
         
         for tank in allTanks {
             runPreActions(tank)
@@ -105,8 +115,6 @@ class TankWorld {
         for tank in allTanks {
             runPostActions(tank)
         }
-        
-        removeDeadObjects(gameObjects: allObjects)  //TODO: Do this more often????
         
         nextTurn()
     }

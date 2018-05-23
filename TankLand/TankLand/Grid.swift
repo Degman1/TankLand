@@ -57,11 +57,11 @@ struct Grid: CustomStringConvertible {
     }
     
     mutating func moveGO(GO: GameObject, newCoords: Position) {
-        if isValidPosition(newCoords) && !isPositionEmpty(newCoords) {
+        if isValidPosition(newCoords) && isPositionEmpty(newCoords) {     //TODO: move sure not to move on tanks + if move on mine or rover explode
             removeGO(GO: GO)
             generateGO(GO: GO, coords: newCoords)
             GO.setPosition(newPosition: newCoords)
-            //print("GO \(GO) moved to position \(GO.position)")
+            print("GO \(GO) moved to position \(GO.position)")
         } else {
             //print("invalid coordinates for moving GO")
         }
@@ -90,11 +90,11 @@ struct Grid: CustomStringConvertible {
                 if attribute == 3 { gridDisplay += String(repeating: "|________", count: size) + "|\n"; continue }    //if its the last line in the sequence of each row, print the dividor line
                 for column in 0..<size {     //within each row of looping through 4 times (will reach this loop 3 of the 4), loop through the # of columns access each individual element on the grid
                     if attribute == 0 {
-                        gridDisplay += "|\(fit((grid[row][column] == nil ? "" : "\(grid[row][column]!.id)"), 8, right: true))"
+                        gridDisplay += "|\(fit((grid[row][column] == nil ? "" : "\(grid[row][column]!.energy)"), 8, right: true))"
                     } else if attribute == 1 {
-                        gridDisplay += "|\(fit(grid[row][column] == nil ? "" : "\(grid[row][column]!.energy)", 8, right: true))"
+                        gridDisplay += "|\(fit(grid[row][column] == nil ? "" : "\(grid[row][column]!.id)", 8, right: true))"
                     } else if attribute == 2 {
-                        gridDisplay += "|\(fit((grid[row][column] == nil ? "" : "\(grid[row][column]!.objectType)"), 8, right: true))"
+                        gridDisplay += "|\(fit((grid[row][column] == nil ? "" : "\(grid[row][column]!.position)"), 8, right: true))"
                     }
                     
                 }

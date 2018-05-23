@@ -10,14 +10,14 @@ import Foundation
 
 class Tank: GameObject {
     private (set) var shields: Int = 0
-    private var radarResults = [ObjectInfo]()
+    var radarResults: [RadarResult]?    //TODO: private across inhereted classes not working?
     private var receivedMessage: String?
     private (set) var preActions = [Actions: PreAction]()
     private (set) var postActions = [Actions: PostAction]()
-    private let initialInstructions: String
+    private let initialInstructions: String?
     
     init(id: String, row: Int, col: Int, energy: Int, instructions: String) {
-        initialInstructions = instructions    //this is the instructions given to each tankat the start of the match by the owner so the tank knows which strategies/methods to use
+        initialInstructions = instructions    //this is the instructions given to each tank at the start of the match by the owner so the tank knows which strategies/methods to use
         super.init(row: row, col: col, objectType: GameObjectType.tank, energy: energy, id: id)
     }
     
@@ -29,7 +29,7 @@ class Tank: GameObject {
     final func receiveMessage(message: String?) {receivedMessage = message}
     
     func computePreActions() {
-        
+        //TODO: in SampleTank super.computePreActions() ??
     }
     
     func computePostActions() {
@@ -46,7 +46,7 @@ class Tank: GameObject {
     
     final func setShields(amount: Int) {shields = amount}
     
-    final func setRadarResult(radarResults: [ObjectInfo]) {
+    final func setRadarResult(radarResults: [RadarResult]) {
         self.radarResults = radarResults
     }
     
