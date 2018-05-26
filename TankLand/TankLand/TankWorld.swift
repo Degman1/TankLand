@@ -136,7 +136,7 @@ class TankWorld {
             gameOver = true
         }
         
-        print("****Winner is...\(lastLivingTank!)****")
+        //print("****Winner is...\(lastLivingTank!)****")
     }
 }
 
