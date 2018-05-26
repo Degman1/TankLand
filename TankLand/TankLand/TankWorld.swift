@@ -123,7 +123,7 @@ class TankWorld {
         logger.log("BEGINNING TURN #\(turn)")
         logger.log("NLT: \(numberLivingTanks)")
         doTurn()
-        print(gridReport())
+        logger.log(gridReport())
     }
     
     func driver() {
@@ -133,6 +133,7 @@ class TankWorld {
         while !gameOver {
             if (numberLivingTanks == 1) {setWinner(lastStandingTank: findWinner()); break}
             runOneTurn()
+            gameOver = true
         }
         
         print("****Winner is...\(lastLivingTank!)****")

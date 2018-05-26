@@ -21,7 +21,7 @@ var j3 = SampleTank(id: "SampleTank", row: 5, col: 5, energy: Constants.initialT
 var tanks = [j1, j2, j3]
 tankWorld.populateTankWorld(tanks: tanks)
 
-tankWorld.runOneTurn()
+tankWorld.driver()
 
 
 /*//var logger = Logger()
