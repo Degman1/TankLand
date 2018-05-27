@@ -25,7 +25,6 @@ class TankWorld {
         for tank in tanks {
             addGameObject(gameObject: tank)
         }
-        logger.log("")
     }
     
     func addGameObject(gameObject: GameObject) {
@@ -54,7 +53,7 @@ class TankWorld {
     func moveRovers(_ rovers: [Mine]) {
         //either random or in direction
         for rover in rovers {
-            let newPos = newPosition(position: rover.position, direction: (rover.moveDirection == nil) ? Position.getRandomDirection() : rover.moveDirection!, magnitude: 1)
+            let newPos = Position.newPosition(position: rover.position, direction: (rover.moveDirection == nil) ? Position.getRandomDirection() : rover.moveDirection!, magnitude: 1)
             grid.moveGO(GO: rover, newCoords: newPos)   //TODO: apply damage of mines and rovers
         }
     }

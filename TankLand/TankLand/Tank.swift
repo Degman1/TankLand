@@ -11,7 +11,7 @@ import Foundation
 class Tank: GameObject {
     private (set) var shields: Int = 0
     var radarResults: [RadarResult]?    //TODO: private across inhereted classes not working?
-    private var receivedMessage: String?
+    var receivedMessage: String?
     private (set) var preActions = [Actions: PreAction]()
     private (set) var postActions = [Actions: PostAction]()
     private let initialInstructions: String?
@@ -33,7 +33,7 @@ class Tank: GameObject {
     }
     
     func computePostActions() {
-        
+        //TODO: Should the tank refresh the pre+post actions or is that the game's job?
     }
     
     final func addPreAction(preAction: PreAction) {

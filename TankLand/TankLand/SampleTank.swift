@@ -13,7 +13,7 @@ class SampleTank: Tank {
         super.init(id: id, row: row, col: col, energy: energy, instructions: instructions)
     }
     
-    func chanceOf (percent: Int)->Bool{
+    func chanceOf (percent: Int) -> Bool{
         let ran = getRandomInt(range: 100)
         return percent <= ran
     }
@@ -21,11 +21,15 @@ class SampleTank: Tank {
     override func computePreActions(){
         addPreAction(preAction: ShieldAction(power: 300))
         addPreAction(preAction: RadarAction(range: 4))
+        addPreAction(preAction: SendMessageAction(key: "someRandomPassward", message: "Message Sending Works!"))
+        addPreAction(preAction: ReceiveMessageAction(key: "someRandomPassward"))
         super.computePreActions()
     }
     
     override func computePostActions(){
-        addPostAction(postAction: MoveAction(distance: 2, direction: .S))
+        addPostAction(postAction: MoveAction(distance: 1, direction: .NW))
+        addPostAction(postAction: DropMineAction(power: 500, dropDirection: .NW))
+        addPostAction(postAction: MissileAction(power: 100, target: Position(0, 0)))
         super.computePostActions()
         
         /*if (chanceOf(percent: 50)){

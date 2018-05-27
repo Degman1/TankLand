@@ -8,7 +8,7 @@
 
 import Foundation
 
-struct MessageCenter {
+struct MessageCenter {  //TODO: Should this really be a static based class?
     static var messages = [String: String]() //[id: message]
     
     static func sendMessage(id: String, message: String) {
@@ -19,6 +19,6 @@ struct MessageCenter {
         if let message = messages[id] {
             return message
         }
-        return ""   //anything else??
+        return ""   //TODO: anything else special??
     }
 }

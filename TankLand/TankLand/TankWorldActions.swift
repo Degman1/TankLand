@@ -68,13 +68,13 @@ extension TankWorld {   //functions to run and handle actions go here
     //post-action handling
     
     func dropExplosive(tank: Tank, dropMineAction: DropMineAction) {
-        let dropPos = newPosition(position: tank.position, direction: (dropMineAction.dropDirection == nil) ? Position.getRandomDirection() : dropMineAction.dropDirection!, magnitude: 1)
+        let dropPos = Position.newPosition(position: tank.position, direction: (dropMineAction.dropDirection == nil) ? Position.getRandomDirection() : dropMineAction.dropDirection!, magnitude: 1)
         
         if dropMineAction.isRover {
             let rover = Mine(id: "rover1", row: dropPos.y, col: dropPos.x, energy: dropMineAction.power, isRover: true, moveDirection: dropMineAction.moveDirection)    //TODO: what should the id be?
             grid.generateGO(GO: rover, coords: rover.position)
         } else {
-            let mine = Mine(id: "mine1", row: dropPos.y, col: dropPos.x, energy: dropMineAction.power, isRover: false, moveDirection: dropMineAction.moveDirection)    //TODO: what should the id be?
+            let mine = Mine(id: "mine1", row: dropPos.x, col: dropPos.y, energy: dropMineAction.power, isRover: false, moveDirection: dropMineAction.moveDirection)    //TODO: what should the id be?
             grid.generateGO(GO: mine, coords: mine.position)
         }
     }
@@ -121,8 +121,9 @@ extension TankWorld {   //functions to run and handle actions go here
         for row in -1...1 {
             for col in -1...1 {
                 if !(row != 0 || col != 0) {continue}   //skip over target spot -- already dealt damage
-                if let targetContent = grid.getGO(coords: Position(missileAction.target.x + col, missileAction.target.y + row)) {
-                    applyDamage(targetContent, amount: missileAction.power  * Constants.missleStrikeCollateral)     //TODO: What happends if hits something other than a tank? still damage?
+                let collateralPos = Position(missileAction.target.x + col, missileAction.target.y + row)
+                if let targetContent = grid.getGO(coords: collateralPos) {
+                    applyDamage(targetContent, amount: missileAction.power * Constants.missleStrikeCollateral)     //TODO: What happends if hits something other than a tank? still damage?
                 } else {
                     logger.addLog(gameObject: tank, message: "\(missileAction.target) unoccupied, no damage done")
                 }
@@ -147,7 +148,7 @@ extension TankWorld {   //functions to run and handle actions go here
     
     func handleMoveAction(_ tank: Tank, _ moveAction: MoveAction) {
         if isDead(tank) {return}
-        let newPos = newPosition(position: tank.position, direction: moveAction.direction, magnitude: moveAction.distance)
+        let newPos = Position.newPosition(position: tank.position, direction: moveAction.direction, magnitude: moveAction.distance)
         logger.addLog(gameObject: tank, message: "Moving from \(tank.position) to \(newPos)")
         
         if !isEnergyAvailable(tank, amount: Constants.costOfMovingTankPerUnitDistance[distance(tank.position, newPos)]) {
@@ -155,7 +156,21 @@ extension TankWorld {   //functions to run and handle actions go here
             return
         }
         
-        applyCost(tank, amount: Constants.costOfMovingTankPerUnitDistance[distance(tank.position, newPos)])
-        grid.moveGO(GO: tank, newCoords: newPos)
+        if isPositionEmpty(newPos) {
+            applyCost(tank, amount: Constants.costOfMovingTankPerUnitDistance[distance(tank.position, newPos)])
+            grid.moveGO(GO: tank, newCoords: newPos)
+        } else {
+            let contents = grid.getGO(coords: newPos)!
+            if contents.objectType == .mine || contents.objectType == .rover {
+                logger.addLog(gameObject: tank, message: "\(contents) exploded at position \(contents.position)")
+                applyDamage(tank, amount: contents.energy)
+                applyDamage(contents, amount: contents.energy)
+                
+                applyCost(tank, amount: Constants.costOfMovingTankPerUnitDistance[distance(tank.position, newPos)])
+                grid.moveGO(GO: tank, newCoords: newPos)
+            } else {
+                logger.addLog(gameObject: tank, message: "illegal action: cannot move onto occupied space") //TODO: correct message and for mine or rover exploding above?
+            }
+        }
     }
 }

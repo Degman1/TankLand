@@ -57,11 +57,10 @@ struct Grid: CustomStringConvertible {
     }
     
     mutating func moveGO(GO: GameObject, newCoords: Position) {
-        if isValidPosition(newCoords) && isPositionEmpty(newCoords) {     //TODO: move sure not to move on tanks + if move on mine or rover explode
+        if isValidPosition(newCoords) {     //TODO: move sure not to move on tanks + if move on mine or rover explode
             removeGO(GO: GO)
             generateGO(GO: GO, coords: newCoords)
             GO.setPosition(newPosition: newCoords)
-            print("GO \(GO) moved to position \(GO.position)")
         } else {
             //print("invalid coordinates for moving GO")
         }
@@ -75,7 +74,7 @@ struct Grid: CustomStringConvertible {
         return nil
     }
     
-    func isPositionEmpty(_ position: Position) -> Bool{
+    func isPositionEmpty(_ position: Position) -> Bool {
         if getGO(coords: position) == nil {
             return true
         }
