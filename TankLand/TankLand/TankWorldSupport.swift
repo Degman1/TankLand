@@ -53,7 +53,7 @@ extension TankWorld {    //extends tankland class, this is where the helper func
     }
     
     func randomizeGameObjects<T: GameObject>(gameObjects: [T]) -> [T] {
-        return gameObjects  //TODO: randomize the array
+        return gameObjects  //TODO: randomize the array using random numbers
     }
     
     func findGameObjectsWithinRange(_ position: Position, range: Int) -> [RadarResult] {
@@ -94,7 +94,7 @@ extension TankWorld {    //extends tankland class, this is where the helper func
         return surroundings
     }
     
-    func findFreeAdjacent(_ position: Position) -> Position? {
+    func findFreeAdjacent(_ position: Position) -> Position? {  //TODO: which adjacent should it choose
         let surroundings = getLegalSurroundingPositions(position)
         return surroundings == [] ? nil : surroundings[getRandomInt(range: 8)]
     }
