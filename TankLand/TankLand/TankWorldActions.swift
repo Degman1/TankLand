@@ -49,7 +49,8 @@ extension TankWorld {   //functions to run and handle actions go here
         
         applyCost(tank, amount: Constants.costOfRadarByUnitsDistance[radarAction.range])
         let radarResult = findGameObjectsWithinRange(tank.position, range: radarAction.range)
-        tank.setRadarResult(radarResults: radarResult)
+        if radarResult.count > 0 { tank.setRadarResult(radarResults: radarResult) }
+        else { tank.setRadarResult(radarResults: nil) }
     }
     
     func handleSetShieldsAction(_ tank: Tank, _ shieldAction: ShieldAction) {
@@ -71,7 +72,7 @@ extension TankWorld {   //functions to run and handle actions go here
         let dropPos = Position.newPosition(position: tank.position, direction: (dropMineAction.dropDirection == nil) ? Position.getRandomDirection() : dropMineAction.dropDirection!, magnitude: 1)
         
         if dropMineAction.isRover {
-            let rover = Mine(id: "rover1", row: dropPos.y, col: dropPos.x, energy: dropMineAction.power, isRover: true, moveDirection: dropMineAction.moveDirection)    //TODO: what should the id be?
+            let rover = Mine(id: "rover1", row: dropPos.x, col: dropPos.y, energy: dropMineAction.power, isRover: true, moveDirection: dropMineAction.moveDirection)    //TODO: what should the id be?
             grid.generateGO(GO: rover, coords: rover.position)
         } else {
             let mine = Mine(id: "mine1", row: dropPos.x, col: dropPos.y, energy: dropMineAction.power, isRover: false, moveDirection: dropMineAction.moveDirection)    //TODO: what should the id be?
@@ -105,23 +106,27 @@ extension TankWorld {   //functions to run and handle actions go here
         dropExplosive(tank: tank, dropMineAction: dropRoverAction)
     }
     
-    func fireMissile(_ tank: Tank, missileAction: MissileAction) {
+    func fireMissile(_ tank: Tank, missileAction: MissileAction) -> Bool {  //return if direct hit or not
         //fire to direct location + include collateral damage
+        let hit: Bool
         
         logger.log("\n**********MISSILE STRIKE RESULTS \(tank) hits \(missileAction.target)")
-        logger.addLog(gameObject: tank, message: "\(tank) strikes location \(missileAction.target) with energy \(missileAction.power)")
+        logger.addLog(gameObject: tank, message: "\(tank) strikes location \(missileAction.target) with energy \(missileAction.power * Constants.missleStrikeMultiple)")
         
         //strike location:
         if let targetContent = grid.getGO(coords: missileAction.target) {
             applyDamage(targetContent, amount: missileAction.power * Constants.missleStrikeMultiple)     //TODO: What happends if hits something other than a tank? still damage?
+            hit = true
         } else {
             logger.addLog(gameObject: tank, message: "\(missileAction.target) unoccupied, no damage done")
+            hit = false
         }
         
         for row in -1...1 {
             for col in -1...1 {
-                if !(row != 0 || col != 0) {continue}   //skip over target spot -- already dealt damage
                 let collateralPos = Position(missileAction.target.x + col, missileAction.target.y + row)
+                if !(row != 0 || col != 0) || collateralPos.x < 0 || collateralPos.y < 0 || collateralPos.x >=  Constants.gridSize || collateralPos.y >= Constants.gridSize  {continue}   //skip over target spot -- already dealt damage
+                logger.addLog(gameObject: tank, message: "\(tank) strikes location \(collateralPos) with energy \(missileAction.power * Constants.missleStrikeCollateral)")
                 if let targetContent = grid.getGO(coords: collateralPos) {
                     applyDamage(targetContent, amount: missileAction.power * Constants.missleStrikeCollateral)     //TODO: What happends if hits something other than a tank? still damage?
                 } else {
@@ -129,8 +134,8 @@ extension TankWorld {   //functions to run and handle actions go here
                 }
             }
         }
-        
         logger.log("*********END MISSILE STRIKE RESULTS\n")
+        return hit
     }
     
     func handleFireMissileAction(_ tank: Tank, _ missileAction: MissileAction) {
@@ -138,12 +143,13 @@ extension TankWorld {   //functions to run and handle actions go here
         logger.addLog(gameObject: tank, message: "Attempted Missile Launch from \(tank) to \(missileAction.target) with energy \(missileAction.power)")
         
         if !isEnergyAvailable(tank, amount: Constants.costOfLaunchingMissile + missileAction.power) {
-            logger.addLog(gameObject: tank, message: "Insufficient energy to drop rover")
+            logger.addLog(gameObject: tank, message: "Insufficient energy to fire missile")
             return
         }
         
         applyCost(tank, amount: Constants.costOfLaunchingMissile + missileAction.power)
-        fireMissile(tank, missileAction: missileAction)
+        let hit = fireMissile(tank, missileAction: missileAction)
+        if hit { tank.addEnergy(amount: missileAction.power / Constants.missleStrikeEnergyTransferFraction) }
     }
     
     func handleMoveAction(_ tank: Tank, _ moveAction: MoveAction) {

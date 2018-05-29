@@ -79,7 +79,10 @@ class TankWorld {
     func runPostActions(_ tank: Tank) {
         //1. drop mine/rover    2. launch missile   3. move     TODO: is it for each tank in this order, or overall in this order??
         tank.computePostActions()
-        if let dropMineAction = tank.postActions[.DropMine] {handleDropMineAction(tank, dropMineAction as! DropMineAction)}
+        if let dropMineAction = tank.postActions[.DropMine] {
+            if (dropMineAction as! DropMineAction).isRover { handleDropRoverAction(tank, dropMineAction as! DropMineAction) }
+            else { handleDropMineAction(tank, dropMineAction as! DropMineAction) }
+        }
         removeDeadObjects()
         if let fireMissileAction = tank.postActions[.Missile] {handleFireMissileAction(tank, fireMissileAction as! MissileAction)}
         removeDeadObjects()
@@ -130,12 +133,12 @@ class TankWorld {
         logger.log(gridReport())
         
         while !gameOver {
-            if (numberLivingTanks == 1) {setWinner(lastStandingTank: findWinner()); break}
+            numberLivingTanks = findAllTanks().count
+            if (numberLivingTanks <= 0) {setWinner(lastStandingTank: findWinner()); break}
             runOneTurn()
-            gameOver = true
         }
         
-        //print("****Winner is...\(lastLivingTank!)****")
+        print("****Winner is...\(lastLivingTank!)****")
     }
 }
 

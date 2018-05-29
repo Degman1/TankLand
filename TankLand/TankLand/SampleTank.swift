@@ -20,16 +20,18 @@ class SampleTank: Tank {
     
     override func computePreActions(){
         addPreAction(preAction: ShieldAction(power: 300))
+        radarResults = nil
         addPreAction(preAction: RadarAction(range: 4))
-        addPreAction(preAction: SendMessageAction(key: "someRandomPassward", message: "Message Sending Works!"))
-        addPreAction(preAction: ReceiveMessageAction(key: "someRandomPassward"))
+        /*addPreAction(preAction: SendMessageAction(key: "someRandomPassward", message: "Message Sending Works!"))
+        addPreAction(preAction: ReceiveMessageAction(key: "someRandomPassward"))*/
         super.computePreActions()
     }
     
-    override func computePostActions(){
-        addPostAction(postAction: MoveAction(distance: 1, direction: .NW))
-        addPostAction(postAction: DropMineAction(power: 500, dropDirection: .NW))
-        addPostAction(postAction: MissileAction(power: 100, target: Position(0, 0)))
+    override func computePostActions() {
+        addPostAction(postAction: MoveAction(distance: 2, direction: Position.getRandomDirection()))
+        addPostAction(postAction: DropMineAction(power: 300, dropDirection: .NW))
+        if let rr = radarResults { addPostAction(postAction: MissileAction(power: 8000, target: rr[0].position)) }
+        //addPostAction(postAction: DropMineAction(power: 500, isRover: true, dropDirection: .E, moveDirection: .S))
         super.computePostActions()
         
         /*if (chanceOf(percent: 50)){

@@ -15,9 +15,9 @@ print("Hello World\n")
 
 var tankWorld = TankWorld()
 
-var j1 = Tank(id: "tank1", row: 0, col: 0, energy: Constants.initialTankEnergy, instructions: "")
-var j2 = Tank(id: "tank2", row: 1, col: 2, energy: Constants.initialTankEnergy, instructions: "")
-var j3 = SampleTank(id: "SampleTank", row: 5, col: 4, energy: Constants.initialTankEnergy, instructions: "")
+var j1 = SampleTank(id: "1_SampleTank", row: 0, col: 0, energy: Constants.initialTankEnergy, instructions: "")
+var j2 = SampleTank(id: "2_SampleTank", row: 1, col: 1, energy: Constants.initialTankEnergy, instructions: "")
+var j3 = SampleTank(id: "3_SampleTank", row: 2, col: 2, energy: Constants.initialTankEnergy, instructions: "")
 var tanks = [j1, j2, j3]
 tankWorld.populateTankWorld(tanks: tanks)
 

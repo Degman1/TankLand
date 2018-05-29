@@ -46,7 +46,7 @@ class Tank: GameObject {
     
     final func setShields(amount: Int) {shields = amount}
     
-    final func setRadarResult(radarResults: [RadarResult]) {
+    final func setRadarResult(radarResults: [RadarResult]?) {   //TODO: is setting it to nil ok?
         self.radarResults = radarResults
     }
     
