@@ -11,7 +11,7 @@ import Foundation
 class GameObject: CustomStringConvertible {
     let objectType: GameObjectType
     private (set) var energy: Int = 0
-    var alive: Bool = true    //turn false once energy <= 0
+    var alive: Bool = true    //turn false once energy <= 0     TODO: need this?
     let id: String
     private (set) var position: Position
     
