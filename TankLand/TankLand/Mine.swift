@@ -8,7 +8,6 @@
 
 import Foundation
 
-//can also use mines as missiles, so instead of placing them on the location of the tank that is placing it, send it directly to the target position
 class Mine: GameObject {
     let isRover: Bool
     let moveDirection: Direction?
