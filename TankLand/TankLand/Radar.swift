@@ -44,7 +44,7 @@ struct Radar {
         
         for row in -distance...distance {
             for col in -distance...distance {
-                if (origin.x + col >= 0) && (origin.x + col < gameGrid.size) && (origin.y + row >= 0) && (origin.y + row < gameGrid.size) && (row != 0 || col != 0), let GO = gameGrid.getGO(coords: Position(origin.x + col, origin.y + row)) {
+                if (origin.x + col >= 0) && (origin.x + col < gameGrid.size) && (origin.y + row >= 0) && (origin.y + row < gameGrid.size), let GO = gameGrid.getGO(coords: Position(origin.x + col, origin.y + row)) {
                     result.append(GO)
                 }
             }

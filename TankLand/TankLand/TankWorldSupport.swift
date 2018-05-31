@@ -53,7 +53,8 @@ extension TankWorld {    //extends tankland class, this is where the helper func
     }
     
     func randomizeGameObjects<T: GameObject>(gameObjects: [T]) -> [T] {
-        return gameObjects  //TODO: randomize the array
+        var randomized = Array(repeating: )
+        return gameObjects  //TODO: randomize the array using random numbers
     }
     
     func findGameObjectsWithinRange(_ position: Position, range: Int) -> [RadarResult] {
@@ -76,10 +77,7 @@ extension TankWorld {    //extends tankland class, this is where the helper func
     
     func makeOffSetPosition(position: Position, offSetRow: Int, offSetCol: Int) -> Position? {
         let newPosition = Position(position.x + offSetRow, position.y + offSetCol)
-        if isPositionEmpty(newPosition) {
-            return newPosition
-        }
-        return nil
+        return isPositionEmpty(newPosition) ? newPosition : nil
     }
     
     func getLegalSurroundingPositions(_ position: Position) -> [Position] {
@@ -94,9 +92,10 @@ extension TankWorld {    //extends tankland class, this is where the helper func
         return surroundings
     }
     
-    func findFreeAdjacent(_ position: Position) -> Position? {
+    func findFreeAdjacent(_ position: Position) -> Position? {  //TODO: which adjacent should it choose
         let surroundings = getLegalSurroundingPositions(position)
-        return surroundings == [] ? nil : surroundings[getRandomInt(range: 8)]
+        let randomSpot = getRandomInt(surroundings.count)
+        return surroundings == [] ? nil : randomSpot
     }
                      
     func isEnergyAvailable(_ gameObject: GameObject, amount: Int) -> Bool {
