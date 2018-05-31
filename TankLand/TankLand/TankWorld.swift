@@ -58,26 +58,21 @@ class TankWorld {
         }
     }
     
-    func runPreActions(_ tank: Tank) {
-        tank.computePreActions()
-        //order not matter -- QUESTION: How does a tank read anothers message is it tries to send + recieve at the same time? -- only one tank will recieve the other message and the other one won't
-        for action in tank.preActions {
-            switch action.key {
-            case .SendMessage: handleSendMessageAction(tank, action.value as! SendMessageAction)
-                removeDeadObjects()
-            case .ReceiveMessage: handleRecieveMessageAction(tank, action.value as! ReceiveMessageAction)
-                removeDeadObjects()
-            case .Radar: handleRunRadarAction(tank, action.value as! RadarAction)
-                removeDeadObjects()
-            case .Shields: handleSetShieldsAction(tank, action.value as! ShieldAction)
-                removeDeadObjects()
-            default: logger.log("\(action) is not a pre-action")
-            }
+    func runPreActions(_ tanks: [Tank]) {
+        //only need to send messages first so every message shows up when receiving. order of the rest does not matter
+        for tank in tanks {
+            tank.computePreActions()
+            if let sendMessageAction = tank.preActions[.SendMessage] { handleSendMessageAction(tank, sendMessageAction.value as! SendMessageAction) }
+        }
+        for tank in tanks {
+            if let receiveMessageAction = tank.preActions[.ReceiveMessage] { handleRecieveMessageAction(tank, receiveMessageAction as! ReceiveMessageAction) }
+            if let radarAction == tank.preActions[.Radar] { handleRunRadarAction(tank, radarAction as! RadarAction) }
+            if let shieldAction == tank.preActions[.Shields] { handleSetShieldsAction(tank, shieldAction as! ShieldAction) }
         }
     }
     
     func runPostActions(_ tank: Tank) {
-        //1. drop mine/rover    2. launch missile   3. move     TODO: is it for each tank in this order, or overall in this order??
+        //1. drop mine/rover    2. launch missile   3. move
         tank.computePostActions()
         if let dropMineAction = tank.postActions[.DropMine] {
             if (dropMineAction as! DropMineAction).isRover { handleDropRoverAction(tank, dropMineAction as! DropMineAction) }
@@ -91,6 +86,9 @@ class TankWorld {
     }
     
     func removeDeadObjects() {
+        if findAllTanks().count == 1 {
+            //TODO: stop the turn and get out of the loop
+        }
         for gameObject in findAllGameObjects() {
             if isDead(gameObject) {
                 grid.removeGO(GO: gameObject)
@@ -135,7 +133,8 @@ class TankWorld {
         while !gameOver {
             numberLivingTanks = findAllTanks().count
             if (numberLivingTanks <= 0) {setWinner(lastStandingTank: findWinner()); break}
-            runOneTurn()
+            runOneTurn() //TODO: must stop in middle of turn!!
+            //if let winner = runOneTurn() {setWinner(lastStandingTank: findWinner()); break}
         }
         
         print("****Winner is...\(lastLivingTank!)****")
