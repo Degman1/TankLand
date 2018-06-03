@@ -16,9 +16,9 @@ print("Hello World\n")
 var tankWorld = TankWorld()
 
 var j1 = SampleTank(id: "1_SampleTank", row: 0, col: 0, energy: Constants.initialTankEnergy, instructions: "")
-var j2 = SampleTank(id: "2_SampleTank", row: 1, col: 1, energy: Constants.initialTankEnergy, instructions: "")
-var j3 = SampleTank(id: "3_SampleTank", row: 2, col: 2, energy: Constants.initialTankEnergy, instructions: "")
-var tanks = [j1, j2, j3]
+var j2 = GameTank(id: "1_GameTank", row: 0, col: 14, energy: Constants.initialTankEnergy, instructions: "")
+//var j3 = SampleTank(id: "3_SampleTank", row: 2, col: 2, energy: Constants.initialTankEnergy, instructions: "")
+var tanks = [j1, j2]
 tankWorld.populateTankWorld(tanks: tanks)
 
 tankWorld.driver()

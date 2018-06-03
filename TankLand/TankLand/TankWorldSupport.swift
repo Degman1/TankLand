@@ -29,10 +29,10 @@ extension TankWorld {    //extends tankland class, this is where the helper func
         return false
     }
     
-    func applyCost(_ tank: Tank, amount: Int) {
-            let startEnergy = tank.energy
-            tank.useEnergy(amount: amount - tank.shields)
-            logger.addLog(gameObject: tank, message: "Energy drop from \(startEnergy) to \(tank.energy)")
+    func applyCost(_ go: GameObject, amount: Int) {
+            let startEnergy = go.energy
+            go.useEnergy(amount: amount)
+            logger.addLog(gameObject: go, message: "Energy drop from \(startEnergy) to \(go.energy)")
     }
     
     func applyDamage(_ go: GameObject, amount: Int) {
@@ -53,7 +53,7 @@ extension TankWorld {    //extends tankland class, this is where the helper func
     }
     
     func randomizeGameObjects<T: GameObject>(gameObjects: [T]) -> [T] {
-        var randomized = Array(repeating: )
+        //var randomized = Array(repeating: )
         return gameObjects  //TODO: randomize the array using random numbers
     }
     
@@ -72,7 +72,7 @@ extension TankWorld {    //extends tankland class, this is where the helper func
     }
     
     func findAllRovers() -> [Mine] {
-        return findAllGameObjects().filter({$0.objectType == GameObjectType.mine}) as! [Mine]
+        return findAllGameObjects().filter({$0.objectType == .rover}) as! [Mine]
     }
     
     func makeOffSetPosition(position: Position, offSetRow: Int, offSetCol: Int) -> Position? {
@@ -92,10 +92,10 @@ extension TankWorld {    //extends tankland class, this is where the helper func
         return surroundings
     }
     
-    func findFreeAdjacent(_ position: Position) -> Position? {  //TODO: which adjacent should it choose
+    func findFreeAdjacent(_ position: Position) -> Position? {
         let surroundings = getLegalSurroundingPositions(position)
-        let randomSpot = getRandomInt(surroundings.count)
-        return surroundings == [] ? nil : randomSpot
+        if surroundings == [] {return nil}
+        else {return surroundings[getRandomInt(range: surroundings.count)]}
     }
                      
     func isEnergyAvailable(_ gameObject: GameObject, amount: Int) -> Bool {

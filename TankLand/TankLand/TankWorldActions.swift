@@ -58,7 +58,7 @@ extension TankWorld {   //functions to run and handle actions go here
         logger.addLog(gameObject: tank, message: "Setting shields to \(shieldAction)")
         
         if !isEnergyAvailable(tank, amount: Constants.shieldPowerMultiple * shieldAction.power) {
-            logger.addLog(gameObject: tank, message: "Insufficient energy to set shields")   //TODO: should it set shields to a lower amount, or just stop the action?
+            logger.addLog(gameObject: tank, message: "Insufficient energy to set shields")
             return
         }
         
@@ -70,13 +70,42 @@ extension TankWorld {   //functions to run and handle actions go here
     
     func dropExplosive(tank: Tank, dropMineAction: DropMineAction) {
         let dropPos = Position.newPosition(position: tank.position, direction: (dropMineAction.dropDirection == nil) ? Position.getRandomDirection() : dropMineAction.dropDirection!, magnitude: 1)
+        if !Grid.isValidPosition(dropPos) {return}
         
         if dropMineAction.isRover {
-            let rover = Mine(id: "rover1", row: dropPos.x, col: dropPos.y, energy: dropMineAction.power, isRover: true, moveDirection: dropMineAction.moveDirection)    //TODO: what should the id be?
-            grid.generateGO(GO: rover, coords: rover.position)
+            let rover = Mine(row: dropPos.y, col: dropPos.x, energy: dropMineAction.power, isRover: true, moveDirection: dropMineAction.moveDirection)
+            if let contents = grid.getGO(coords: dropPos) {
+                logger.addMajorLogger(gameObject: rover, message: "Added to TankLand")
+                if contents.objectType == .mine || contents.objectType == .rover {
+                    logger.addLog(gameObject: contents, message: "exploded at position \(contents.position)")
+                    logger.addLog(gameObject: rover, message: "exploded at position \(rover.position)")
+                    applyDamage(contents, amount: contents.energy)
+                    applyDamage(rover, amount: rover.energy)
+                } else {
+                    logger.log("\(contents) exploded at position \(contents.position)") //QQQ is rover allowed to be a major logger?
+                    applyDamage(contents, amount: rover.energy)
+                    applyDamage(rover, amount: rover.energy)
+                }
+            } else {
+                addGameObject(gameObject: rover)
+            }
         } else {
-            let mine = Mine(id: "mine1", row: dropPos.x, col: dropPos.y, energy: dropMineAction.power, isRover: false, moveDirection: dropMineAction.moveDirection)    //TODO: what should the id be?
-            grid.generateGO(GO: mine, coords: mine.position)
+            let mine = Mine(row: dropPos.y, col: dropPos.x, energy: dropMineAction.power, isRover: false, moveDirection: dropMineAction.moveDirection)
+            if let contents = grid.getGO(coords: dropPos) {
+                logger.addMajorLogger(gameObject: mine, message: "Added to TankLand")
+                if contents.objectType == .mine || contents.objectType == .rover {
+                    logger.addLog(gameObject: contents, message: "exploded at position \(contents.position)")
+                    logger.addLog(gameObject: mine, message: "exploded at position \(mine.position)")
+                    applyDamage(contents, amount: contents.energy)
+                    applyDamage(mine, amount: mine.energy)
+                } else {
+                    logger.addLog(gameObject: mine, message: "exploded at position \(mine.position)")
+                    applyDamage(contents, amount: mine.energy)
+                    applyDamage(mine, amount: mine.energy)
+                }
+            } else {
+                addGameObject(gameObject: mine)
+            }
         }
     }
     
@@ -168,15 +197,37 @@ extension TankWorld {   //functions to run and handle actions go here
         } else {
             let contents = grid.getGO(coords: newPos)!
             if contents.objectType == .mine || contents.objectType == .rover {
-                logger.addLog(gameObject: tank, message: "\(contents) exploded at position \(contents.position)")
-                applyDamage(tank, amount: contents.energy)
+                logger.addLog(gameObject: contents, message: "\(contents) exploded at position \(contents.position)")
+                applyDamage(tank, amount: contents.energy * Constants.mineStrikeMultiple)
                 applyDamage(contents, amount: contents.energy)
                 
                 applyCost(tank, amount: Constants.costOfMovingTankPerUnitDistance[distance(tank.position, newPos)])
                 grid.moveGO(GO: tank, newCoords: newPos)
             } else {
-                logger.addLog(gameObject: tank, message: "illegal action: cannot move onto occupied space") //TODO: correct message and for mine or rover exploding above?
+                logger.addLog(gameObject: tank, message: "illegal action: cannot move onto occupied space") //TODO: correct message and for mine or rover exploding above? QQQ
             }
         }
+    }
+    
+    func handleMoveRover(_ rover: Mine) {
+        //either random or in direction
+        let newPos = Position.newPosition(position: rover.position, direction: (rover.moveDirection == nil) ? Position.getRandomDirection() : rover.moveDirection!, magnitude: 1)
+        if isPositionEmpty(newPos) {
+            grid.moveGO(GO: rover, newCoords: newPos)
+            logger.addLog(gameObject: rover, message: "Moved to position \(rover.position)")
+        } else {
+            let contents = grid.getGO(coords: newPos)!
+            if contents.objectType == .mine || contents.objectType == .rover {
+                logger.addLog(gameObject: contents, message: "Exploded at position \(contents.position)")
+                logger.addLog(gameObject: rover, message: "Exploded at position \(rover.position)")
+                applyDamage(contents, amount: contents.energy)
+                applyDamage(rover, amount: rover.energy)
+            } else {
+                logger.addLog(gameObject: rover, message: "Exploded at position \(rover.position)")
+                applyDamage(contents, amount: rover.energy)
+                applyDamage(rover, amount: rover.energy)
+            }
+        }
+        removeDeadObjects()
     }
 }

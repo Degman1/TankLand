@@ -17,23 +17,16 @@ struct Grid: CustomStringConvertible {
         grid = Array(repeating: Array(repeating: nil, count: size), count: size)
     }
     
-    func isGoodIndex(row: Int, col: Int) -> Bool {
-        if row <= 14 && row >= 0 && col >= 0 && col <= 14 {
+    static func isValidPosition(_ p: Position) -> Bool {
+        if p.x <= 14 && p.x >= 0 && p.y >= 0 && p.y <= 14 {
             return true
         }
-        //print("bad index")
-        return false
-    }
-    
-    func isValidPosition(_ Position: Position)->Bool {
-        if isGoodIndex(row: Position.x, col: Position.y) {
-            return true}
         return false
     }
     
     //create a tank on the grid
     mutating func generateGO(GO: GameObject, coords: Position) {
-        if isValidPosition(coords) {
+        if Grid.isValidPosition(coords) {
             grid[coords.y][coords.x] = GO
             GO.setPosition(newPosition: coords)
             //print("Game Object '\(GO.id)' at position \(coords) has been generated")
@@ -50,14 +43,14 @@ struct Grid: CustomStringConvertible {
     
     //remove a tank from the grid
     mutating func removeGO(GO: GameObject) {
-        if isValidPosition(GO.position) {
+        if Grid.isValidPosition(GO.position) {
             grid[GO.position.y][GO.position.x] = nil
             //print("Game Object '\(GO.id)' at position \(coords) has been destroyed")
         }
     }
     
     mutating func moveGO(GO: GameObject, newCoords: Position) {
-        if isValidPosition(newCoords) {     //TODO: move sure not to move on tanks + if move on mine or rover explode
+        if Grid.isValidPosition(newCoords) {
             removeGO(GO: GO)
             generateGO(GO: GO, coords: newCoords)
             GO.setPosition(newPosition: newCoords)
@@ -68,7 +61,7 @@ struct Grid: CustomStringConvertible {
     
     //find the contents of a given location
     func getGO(coords: Position) -> GameObject? {
-        if isValidPosition(coords) {
+        if Grid.isValidPosition(coords) {
             return grid[coords.y][coords.x]
         }
         return nil

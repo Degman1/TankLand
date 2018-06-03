@@ -44,17 +44,9 @@ class TankWorld {
     
     func chargeTurnEnergy(_ GOs: [GameObject]) {
         for GO in GOs {
-            if GO.objectType == .tank {applyCost(GO as! Tank, amount: Constants.costLifeSupportTank)}
-            if GO.objectType == .mine {GO.useEnergy(amount: Constants.costLifeSupportMine)} //log this??
-            if GO.objectType == .rover {GO.useEnergy(amount: Constants.costLifeSupportRover)} //log this??
-        }
-    }
-    
-    func moveRovers(_ rovers: [Mine]) {
-        //either random or in direction
-        for rover in rovers {
-            let newPos = Position.newPosition(position: rover.position, direction: (rover.moveDirection == nil) ? Position.getRandomDirection() : rover.moveDirection!, magnitude: 1)
-            grid.moveGO(GO: rover, newCoords: newPos)   //TODO: apply damage of mines and rovers
+            if GO.objectType == .tank {applyCost(GO, amount: Constants.costLifeSupportTank)}
+            if GO.objectType == .mine {applyCost(GO, amount: Constants.costLifeSupportMine)}
+            if GO.objectType == .rover {applyCost(GO, amount: Constants.costLifeSupportRover)} //log this??
         }
     }
     
@@ -62,32 +54,47 @@ class TankWorld {
         //only need to send messages first so every message shows up when receiving. order of the rest does not matter
         for tank in tanks {
             tank.computePreActions()
-            if let sendMessageAction = tank.preActions[.SendMessage] { handleSendMessageAction(tank, sendMessageAction.value as! SendMessageAction) }
+            if let sendMessageAction = tank.preActions[.SendMessage] { handleSendMessageAction(tank, sendMessageAction as! SendMessageAction) }
         }
         for tank in tanks {
             if let receiveMessageAction = tank.preActions[.ReceiveMessage] { handleRecieveMessageAction(tank, receiveMessageAction as! ReceiveMessageAction) }
-            if let radarAction == tank.preActions[.Radar] { handleRunRadarAction(tank, radarAction as! RadarAction) }
-            if let shieldAction == tank.preActions[.Shields] { handleSetShieldsAction(tank, shieldAction as! ShieldAction) }
+            if let radarAction = tank.preActions[.Radar] { handleRunRadarAction(tank, radarAction as! RadarAction) }
+            if let shieldAction = tank.preActions[.Shields] { handleSetShieldsAction(tank, shieldAction as! ShieldAction)}
+        }
+        for tank in tanks {
+            tank.preActions = [:]
         }
     }
     
-    func runPostActions(_ tank: Tank) {
-        //1. drop mine/rover    2. launch missile   3. move
-        tank.computePostActions()
-        if let dropMineAction = tank.postActions[.DropMine] {
-            if (dropMineAction as! DropMineAction).isRover { handleDropRoverAction(tank, dropMineAction as! DropMineAction) }
-            else { handleDropMineAction(tank, dropMineAction as! DropMineAction) }
+    func runPostActions(_ tanks: [Tank]) {
+        for tank in tanks {
+            //1. drop mine/rover    2. launch missile   3. move
+            tank.computePostActions()
+            if let dropMineAction = tank.postActions[.DropMine] {
+                if (dropMineAction as! DropMineAction).isRover { handleDropRoverAction(tank, dropMineAction as! DropMineAction) }
+                else { handleDropMineAction(tank, dropMineAction as! DropMineAction) }
+            }
+            removeDeadObjects()
+            if let fireMissileAction = tank.postActions[.Missile] {handleFireMissileAction(tank, fireMissileAction as! MissileAction)}
+            removeDeadObjects()
+            if let moveAction = tank.postActions[.Move] { handleMoveAction(tank, moveAction as! MoveAction) }
+            removeDeadObjects()
         }
-        removeDeadObjects()
-        if let fireMissileAction = tank.postActions[.Missile] {handleFireMissileAction(tank, fireMissileAction as! MissileAction)}
-        removeDeadObjects()
-        if let moveAction = tank.postActions[.Move] { handleMoveAction(tank, moveAction as! MoveAction) }
-        removeDeadObjects()
+        for tank in tanks {
+            tank.postActions = [:]
+        }
+    }
+    
+    func moveRovers(rovers: [Mine]) {
+        for rover in rovers {
+            if isDead(rover) {continue}
+            handleMoveRover(rover)  //TODO: reduce energy for each moving?, or is that accounted for in turn life
+        }
     }
     
     func removeDeadObjects() {
         if findAllTanks().count == 1 {
-            //TODO: stop the turn and get out of the loop
+            //TODO: stop the turn and get out of the loop QQQ
         }
         for gameObject in findAllGameObjects() {
             if isDead(gameObject) {
@@ -105,16 +112,12 @@ class TankWorld {
         chargeTurnEnergy(allObjects)
         removeDeadObjects()
         
-        moveRovers(allRovers)   //make them actually blow up
+        moveRovers(rovers: allRovers)
+        
+        runPreActions(allTanks)
+        runPostActions(allTanks)
+        
         removeDeadObjects()
-        
-        for tank in allTanks {
-            runPreActions(tank)
-        }
-        
-        for tank in allTanks {
-            runPostActions(tank)
-        }
         
         nextTurn()
     }
@@ -129,15 +132,17 @@ class TankWorld {
     func driver() {
         populateTankWorld(tanks: livingTanks)
         logger.log(gridReport())
+        var count = 0
         
         while !gameOver {
             numberLivingTanks = findAllTanks().count
             if (numberLivingTanks <= 0) {setWinner(lastStandingTank: findWinner()); break}
             runOneTurn() //TODO: must stop in middle of turn!!
             //if let winner = runOneTurn() {setWinner(lastStandingTank: findWinner()); break}
+            if count == 1 {break}
+            count += 1
         }
-        
-        print("****Winner is...\(lastLivingTank!)****")
+        //print("****Winner is...\(lastLivingTank!)****")
     }
 }
 

@@ -19,6 +19,6 @@ struct MessageCenter {  //TODO: Should this really be a static based class?
         if let message = messages[id] {
             return message
         }
-        return ""   //TODO: anything else special??
+        return ""
     }
 }

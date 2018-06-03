@@ -19,7 +19,7 @@ class GameObject: CustomStringConvertible {
         self.objectType = objectType
         self.energy = energy
         self.id = id
-        self.position = Position(row, col)
+        self.position = Position(col, row)
     }
     
     final func addEnergy(amount: Int) {

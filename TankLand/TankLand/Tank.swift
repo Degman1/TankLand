@@ -10,10 +10,10 @@ import Foundation
 
 class Tank: GameObject {
     private (set) var shields: Int = 0
-    var radarResults: [RadarResult]?    //TODO: private across inhereted classes not working?
+    var radarResults: [RadarResult]?
     var receivedMessage: String?
-    private (set) var preActions = [Actions: PreAction]()
-    private (set) var postActions = [Actions: PostAction]()
+    var preActions = [Actions: PreAction]()
+    var postActions = [Actions: PostAction]()
     private let initialInstructions: String?
     
     init(id: String, row: Int, col: Int, energy: Int, instructions: String) {
@@ -29,11 +29,11 @@ class Tank: GameObject {
     final func receiveMessage(message: String?) {receivedMessage = message}
     
     func computePreActions() {
-        //TODO: in SampleTank super.computePreActions() ??
+
     }
     
     func computePostActions() {
-        //TODO: Should the tank refresh the pre+post actions or is that the game's job?
+
     }
     
     final func addPreAction(preAction: PreAction) {
@@ -46,7 +46,7 @@ class Tank: GameObject {
     
     final func setShields(amount: Int) {shields = amount}
     
-    final func setRadarResult(radarResults: [RadarResult]?) {   //TODO: is setting it to nil ok?
+    final func setRadarResult(radarResults: [RadarResult]?) {
         self.radarResults = radarResults
     }
     
