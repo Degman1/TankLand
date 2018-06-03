@@ -139,7 +139,7 @@ class TankWorld {
             if (numberLivingTanks <= 0) {setWinner(lastStandingTank: findWinner()); break}
             runOneTurn() //TODO: must stop in middle of turn!!
             //if let winner = runOneTurn() {setWinner(lastStandingTank: findWinner()); break}
-            if count == 1 {break}
+            if count == 2 {break}
             count += 1
         }
         //print("****Winner is...\(lastLivingTank!)****")

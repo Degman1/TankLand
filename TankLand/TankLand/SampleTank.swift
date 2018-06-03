@@ -35,9 +35,13 @@ class SampleTank: Tank {
         //addPostAction(postAction: MoveAction(distance: 1, direction: .S))
         //addPostAction(postAction: DropMineAction(power: 300, dropDirection: .S))
         //if let rr = radarResults { addPostAction(postAction: MissileAction(power: 8000, target: rr[0].position)) }
-        if counter == 0 {addPostAction(postAction: DropMineAction(power: 500, isRover: true, dropDirection: .E, moveDirection: .E))}
+        
+        
+        /*if counter == 0 {addPostAction(postAction: DropMineAction(power: 500, isRover: true, dropDirection: .E, moveDirection: .E))}
         counter += 1
-        super.computePostActions()
+        super.computePostActions()*/
+        
+        
         
         /*if (chanceOf(percent: 50)){
             let randomDirection = Direction(rawValue: getRandomInt(range: 7))!
