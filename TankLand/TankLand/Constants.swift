@@ -27,6 +27,6 @@ struct Constants {
     static var missleStrikeMultiple = 10
     static var missleStrikeCollateral = 3
     static var mineStrikeMultiple = 5    //TODO: Input this into the mine
-    static var shieldPowerMultiple = 8
+    static var shieldPowerMultiple = 8  //and this
     static var missleStrikeEnergyTransferFraction = 4
 }
