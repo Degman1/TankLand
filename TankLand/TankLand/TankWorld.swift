@@ -93,9 +93,7 @@ class TankWorld {
     }
     
     func removeDeadObjects() {
-        if findAllTanks().count == 1 {
-            //TODO: stop the turn and get out of the loop QQQ
-        }
+        if findAllTanks().count == 1 {  }   //QQQ: How stop the while loop if where you are checking is 3  functions underneath the loop -- is there a better way than having them just all return down the chain until it reaches the while loop?
         for gameObject in findAllGameObjects() {
             if isDead(gameObject) {
                 grid.removeGO(GO: gameObject)
@@ -109,15 +107,12 @@ class TankWorld {
         let allTanks = randomizeGameObjects(gameObjects: findAllTanks())
         //code to run a single turn
         
-        chargeTurnEnergy(allObjects)
-        removeDeadObjects()
+        chargeTurnEnergy(allObjects); removeDeadObjects()
         
-        moveRovers(rovers: allRovers)
+        moveRovers(rovers: allRovers); removeDeadObjects()
         
         runPreActions(allTanks)
-        runPostActions(allTanks)
-        
-        removeDeadObjects()
+        runPostActions(allTanks); removeDeadObjects()
         
         nextTurn()
     }
@@ -138,8 +133,8 @@ class TankWorld {
             numberLivingTanks = findAllTanks().count
             if (numberLivingTanks <= 0) {setWinner(lastStandingTank: findWinner()); break}
             runOneTurn() //TODO: must stop in middle of turn!!
-            //if let winner = runOneTurn() {setWinner(lastStandingTank: findWinner()); break}
-            if count == 2 {break}
+            if findAllTanks().count <= 1 {setWinner(lastStandingTank: findWinner()); break}
+            //if count == 2 {break}
             count += 1
         }
         //print("****Winner is...\(lastLivingTank!)****")

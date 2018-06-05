@@ -18,6 +18,12 @@ class GameTank: Tank {
         return percent <= ran
     }
     
+    func distance(_ p1: Position, _ p2: Position) -> Int {
+        let diffx = p2.x - p1.x
+        let diffy = p2.y - p1.y
+        return Int( sqrt( Double((diffx) * (diffx) + (diffy) * (diffy))) )  //will round to be correct
+    }
+    
     //WORKING: shields, sendmessage, receivemessage, radar, move, dropmine
     
     override func computePreActions() {
@@ -30,9 +36,29 @@ class GameTank: Tank {
     }
     
     override func computePostActions() {
-        addPostAction(postAction: MoveAction(distance: 1, direction: Position.getRandomPosition))
-        addPostAction(postAction: DropMineAction(power: 100, dropDirection: Position.getRandomDirection, isRover == true, ))
-        if let rr = radarResults { addPostAction(postAction: MissileAction(power: 5000, target: rr[0].position)) }
+        //TODO: don't own tanks shoot at eachother
+        var closest: RadarResult
+        if let rr = radarResults {
+            closest = rr[0]
+            for r in rr {
+                if r.type == .tank && distance(self.position, r.position) < distance(self.position, closest.position) {
+                    closest = r
+                }
+            }
+            addPostAction(postAction: MissileAction(power: closest.energy / 10, target: closest.position))
+            
+            if rr.count > 3 {
+                //get outta there in TODO: opposite direction
+                addPostAction(postAction: MoveAction(distance: 2, direction: Position.getRandomDirection()))
+            } else {
+                addPostAction(postAction: MoveAction(distance: 1, direction: Position.getRandomDirection()))
+            }
+        } else {
+            addPostAction(postAction: DropMineAction(power: 400, isRover: true))
+        }
+
+        addPostAction(postAction: MoveAction(distance: 2, direction: Position.getRandomDirection()))
+        //addPostAction(postAction: DropMineAction(power: 100, dropDirection: Position.getRandomDirection, isRover == true ))
         
         
         /*if counter == 0 {addPostAction(postAction: DropMineAction(power: 500, isRover: true, dropDirection: .W, moveDirection: .W))}

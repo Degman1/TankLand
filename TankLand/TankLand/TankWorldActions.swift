@@ -210,8 +210,9 @@ extension TankWorld {   //functions to run and handle actions go here
     }
     
     func handleMoveRover(_ rover: Mine) {
-        //either random or in direction
+        //either random or in direction- QQQ- does random moving mean free adjacent, or any adjadent?
         let newPos = Position.newPosition(position: rover.position, direction: (rover.moveDirection == nil) ? Position.getRandomDirection() : rover.moveDirection!, magnitude: 1)
+        //findFreeAdjacent(rover.position)
         if isPositionEmpty(newPos) {
             grid.moveGO(GO: rover, newCoords: newPos)
             logger.addLog(gameObject: rover, message: "Moved to position \(rover.position)")
@@ -228,6 +229,5 @@ extension TankWorld {   //functions to run and handle actions go here
                 applyDamage(rover, amount: rover.energy)
             }
         }
-        removeDeadObjects()
     }
 }

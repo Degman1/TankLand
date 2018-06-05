@@ -15,10 +15,10 @@ print("Hello World\n")
 
 var tankWorld = TankWorld()
 
-var j1 = SampleTank(id: "1_SampleTank", row: 5, col: 5, energy: Constants.initialTankEnergy, instructions: "")
-var j2 = GameTank(id: "1_GameTank", row: 0, col: 14, energy: Constants.initialTankEnergy + 90000000, instructions: "")
+//var j1 = SampleTank(id: "1_SampleTank", row: 5, col: 5, energy: Constants.initialTankEnergy, instructions: "")
+var j2 = GameTank(id: "1_GameTank", row: 4, col: 4, energy: Constants.initialTankEnergy, instructions: "")
 var j3 = SampleTank(id: "3_SampleTank", row: 5, col: 6, energy: Constants.initialTankEnergy, instructions: "")
-var tanks = [j1, j2, j3]
+var tanks = [j2, j3]
 tankWorld.populateTankWorld(tanks: tanks)
 
 tankWorld.driver()
