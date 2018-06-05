@@ -8,9 +8,7 @@
 
 import Foundation
 
-class GameTank: Tank {
-    var counter = 0
-    
+class GameTank: Tank {    
     override init(id: String, row: Int, col: Int, energy: Int, instructions: String){
         super.init(id: id, row: row, col: col, energy: energy, instructions: instructions)
     }
@@ -22,20 +20,19 @@ class GameTank: Tank {
     
     //WORKING: shields, sendmessage, receivemessage, radar, move, dropmine
     
-    override func computePreActions(){
-        //addPreAction(preAction: ShieldAction(power: 300))
-        //radarResults = nil  //TODO: make sure to set it to this so if not yet updated, has at least been initiated
-        //addPreAction(preAction: RadarAction(range: 4))
+    override func computePreActions() {
+        radarResults = nil  //TODO: make sure to set it to this so if not yet updated, has at least been initiated
+        addPreAction(preAction: RadarAction(range: 3))
+        addPreAction(preAction: ShieldAction(power: 500))
         //addPreAction(preAction: SendMessageAction(key: "\(id): someRandomPassward", message: "Message Sending Works for tank \(id)!"))
         //addPreAction(preAction: ReceiveMessageAction(key: "\(id): someRandomPassward"))
         super.computePreActions()   //why calling this ???
     }
     
     override func computePostActions() {
-        //addPostAction(postAction: MoveAction(distance: 1, direction: .S))
-        //addPostAction(postAction: DropMineAction(power: 300, dropDirection: .S))
-        //if let rr = radarResults { addPostAction(postAction: MissileAction(power: 8000, target: rr[0].position)) }
-        addPostAction(postAction: MissileAction(power: 200000, target: Position(5, 5)))
+        addPostAction(postAction: MoveAction(distance: 1, direction: Position.getRandomPosition))
+        addPostAction(postAction: DropMineAction(power: 100, dropDirection: Position.getRandomDirection, isRover == true, ))
+        if let rr = radarResults { addPostAction(postAction: MissileAction(power: 5000, target: rr[0].position)) }
         
         
         /*if counter == 0 {addPostAction(postAction: DropMineAction(power: 500, isRover: true, dropDirection: .W, moveDirection: .W))}
