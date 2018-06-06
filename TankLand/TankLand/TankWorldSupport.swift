@@ -39,22 +39,32 @@ extension TankWorld {    //extends tankland class, this is where the helper func
         var shieldEnergy = 0
         if go.objectType == .tank {
             shieldEnergy = (go as! Tank).shields
-            if amount <= shieldEnergy {
+            if amount <= shieldEnergy * Constants.shieldPowerMultiple {
                 logger.addLog(gameObject: go, message: "Shields hold, no damage done")
             } else {
                 let startEnergy = go.energy
-                go.useEnergy(amount: amount - shieldEnergy)
+                go.useEnergy(amount: amount - (shieldEnergy * Constants.shieldPowerMultiple))
                 logger.addLog(gameObject: go, message: "Shields breached. Tank energy reduced from \(startEnergy) to \(go.energy)")
                 logger.addLog(gameObject: go, message: "Energy drop from \(startEnergy) to \(go.energy)")
             }
         } else {
-            go.useEnergy(amount: amount)    //TODO: reset shields after each turn
+            let startEnergy = go.energy
+            go.useEnergy(amount: amount)
+            logger.addLog(gameObject: go, message: "Energy drop from \(startEnergy) to \(go.energy)")
         }
     }
     
     func randomizeGameObjects<T: GameObject>(gameObjects: [T]) -> [T] {
-        //var randomized = Array(repeating: )
-        return gameObjects  //TODO: randomize the array using random numbers
+        var copyGO = gameObjects
+        var randomized = Array(repeating: GameObject(row: 0, col: 0, objectType: .tank, energy: 0, id: ""), count: gameObjects.count)
+        
+        for i in 0..<gameObjects.count {
+            let rand = getRandomInt(range: copyGO.count)
+            randomized[i] = copyGO[rand]
+            copyGO.remove(at: rand)
+        }
+        
+        return randomized as! [T]
     }
     
     func findGameObjectsWithinRange(_ position: Position, range: Int) -> [RadarResult] {

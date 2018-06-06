@@ -71,6 +71,7 @@ extension TankWorld {   //functions to run and handle actions go here
     func dropExplosive(tank: Tank, dropMineAction: DropMineAction) {
         let dropPos = Position.newPosition(position: tank.position, direction: (dropMineAction.dropDirection == nil) ? Position.getRandomDirection() : dropMineAction.dropDirection!, magnitude: 1)
         if !Grid.isValidPosition(dropPos) {return}
+        //print("\n\(dropPos)\n")
         
         if dropMineAction.isRover {
             let rover = Mine(row: dropPos.y, col: dropPos.x, energy: dropMineAction.power, isRover: true, moveDirection: dropMineAction.moveDirection)
@@ -144,7 +145,7 @@ extension TankWorld {   //functions to run and handle actions go here
         
         //strike location:
         if let targetContent = grid.getGO(coords: missileAction.target) {
-            applyDamage(targetContent, amount: missileAction.power * Constants.missleStrikeMultiple)     //TODO: What happends if hits something other than a tank? still damage?
+            applyDamage(targetContent, amount: missileAction.power * Constants.missleStrikeMultiple)
             hit = true
         } else {
             logger.addLog(gameObject: tank, message: "\(missileAction.target) unoccupied, no damage done")
@@ -157,7 +158,7 @@ extension TankWorld {   //functions to run and handle actions go here
                 if !(row != 0 || col != 0) || collateralPos.x < 0 || collateralPos.y < 0 || collateralPos.x >=  Constants.gridSize || collateralPos.y >= Constants.gridSize  {continue}   //skip over target spot -- already dealt damage
                 logger.addLog(gameObject: tank, message: "\(tank) strikes location \(collateralPos) with energy \(missileAction.power * Constants.missleStrikeCollateral)")
                 if let targetContent = grid.getGO(coords: collateralPos) {
-                    applyDamage(targetContent, amount: missileAction.power * Constants.missleStrikeCollateral)     //TODO: What happends if hits something other than a tank? still damage?
+                    applyDamage(targetContent, amount: missileAction.power * Constants.missleStrikeCollateral)
                 } else {
                     logger.addLog(gameObject: tank, message: "\(missileAction.target) unoccupied, no damage done")
                 }
@@ -204,7 +205,7 @@ extension TankWorld {   //functions to run and handle actions go here
                 applyCost(tank, amount: Constants.costOfMovingTankPerUnitDistance[distance(tank.position, newPos)])
                 grid.moveGO(GO: tank, newCoords: newPos)
             } else {
-                logger.addLog(gameObject: tank, message: "illegal action: cannot move onto occupied space") //TODO: correct message and for mine or rover exploding above? QQQ
+                logger.addLog(gameObject: tank, message: "illegal action: cannot move onto occupied space")
             }
         }
     }
@@ -225,7 +226,7 @@ extension TankWorld {   //functions to run and handle actions go here
                 applyDamage(rover, amount: rover.energy)
             } else {
                 logger.addLog(gameObject: rover, message: "Exploded at position \(rover.position)")
-                applyDamage(contents, amount: rover.energy)
+                applyDamage(contents, amount: rover.energy * Constants.mineStrikeMultiple)
                 applyDamage(rover, amount: rover.energy)
             }
         }

@@ -8,7 +8,7 @@
 
 import Foundation
 
-struct MessageCenter {  //TODO: Should this really be a static based class?
+struct MessageCenter {  //QQQ: Why is this implemented as a static based class
     static var messages = [String: String]() //[id: message]
     
     static func sendMessage(id: String, message: String) {

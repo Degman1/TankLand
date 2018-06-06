@@ -15,14 +15,19 @@ print("Hello World\n")
 
 var tankWorld = TankWorld()
 
-//var j1 = SampleTank(id: "1_SampleTank", row: 5, col: 5, energy: Constants.initialTankEnergy, instructions: "")
-var j2 = GameTank(id: "1_GameTank", row: 4, col: 4, energy: Constants.initialTankEnergy, instructions: "")
-var j3 = SampleTank(id: "3_SampleTank", row: 5, col: 6, energy: Constants.initialTankEnergy, instructions: "")
-var tanks = [j2, j3]
+var j1 = SampleTank(id: "1_SampleTank", row: 0, col: 0, energy: Constants.initialTankEnergy, instructions: "")
+var j2 = GameTank(id: "1_GameTank", row: 0, col: 14, energy: Constants.initialTankEnergy, instructions: "")
+var j3 = SampleTank(id: "2_SampleTank", row: 2, col: 2, energy: Constants.initialTankEnergy, instructions: "")
+
+var tanks = [j1, j2, j3]
 tankWorld.populateTankWorld(tanks: tanks)
 
 tankWorld.driver()
 
+
+
+//new pos. testing
+/*
 func newPosition(position: Position, direction: Direction, magnitude: Int) -> Position {
     switch (direction) {
     case Direction.N : return Position(position.x, position.y - magnitude)
@@ -34,7 +39,7 @@ func newPosition(position: Position, direction: Direction, magnitude: Int) -> Po
     case Direction.W : return Position(position.x - magnitude, position.y)
     case Direction.NW : return Position(position.x - magnitude, position.y - magnitude)
         
-        /*case Direction.N : return Position(position.y - magnitude, position.x)  //TODO: what is happening. Why is the x and y coords switched -- find out why + swap back to above
+        /*case Direction.N : return Position(position.y - magnitude, position.x)
          case Direction.NE : return Position(position.y - magnitude, position.x + magnitude)
          case Direction.E : return Position(position.y, position.x + magnitude)
          case Direction.SE : return Position(position.y + magnitude, position.x + magnitude)
@@ -46,7 +51,7 @@ func newPosition(position: Position, direction: Direction, magnitude: Int) -> Po
 }
 //let pos = Position(1, 1)
 //let newPos = newPosition(position: pos, direction: .NW, magnitude: 1)
-//print(newPos)
+//print(newPos)*/
 
 
 /*//var logger = Logger()

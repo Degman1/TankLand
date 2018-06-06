@@ -27,7 +27,7 @@ class GameTank: Tank {
     //WORKING: shields, sendmessage, receivemessage, radar, move, dropmine
     
     override func computePreActions() {
-        radarResults = nil  //TODO: make sure to set it to this so if not yet updated, has at least been initiated
+        //radarResults = nil  //make sure to set it to this so if not yet updated, has at least been initiated
         addPreAction(preAction: RadarAction(range: 3))
         addPreAction(preAction: ShieldAction(power: 500))
         //addPreAction(preAction: SendMessageAction(key: "\(id): someRandomPassward", message: "Message Sending Works for tank \(id)!"))
@@ -37,27 +37,32 @@ class GameTank: Tank {
     
     override func computePostActions() {
         //TODO: don't own tanks shoot at eachother
-        var closest: RadarResult
         if let rr = radarResults {
-            closest = rr[0]
+            let surroundingTanks = rr.filter({$0.type == .tank})
+            
+            /*var closest: RadarResult?
+            closest = nil
             for r in rr {
-                if r.type == .tank && distance(self.position, r.position) < distance(self.position, closest.position) {
+                if closest == nil || (r.type == .tank && distance(self.position, r.position) < distance(self.position, closest!.position)) {
                     closest = r
                 }
+            }*/
+            if surroundingTanks.count > 0 {
+                addPostAction(postAction: MissileAction(power: surroundingTanks[0].energy / 10, target: surroundingTanks[0].position))
             }
-            addPostAction(postAction: MissileAction(power: closest.energy / 10, target: closest.position))
             
-            if rr.count > 3 {
+            //addPostAction(postAction: MoveAction(distance: 2, direction: .E))
+            /*if rr.count > 3 {
                 //get outta there in TODO: opposite direction
                 addPostAction(postAction: MoveAction(distance: 2, direction: Position.getRandomDirection()))
             } else {
                 addPostAction(postAction: MoveAction(distance: 1, direction: Position.getRandomDirection()))
-            }
+            }*/
         } else {
-            addPostAction(postAction: DropMineAction(power: 400, isRover: true))
+            addPostAction(postAction: DropMineAction(power: 400, isRover: true, dropDirection: .S, moveDirection: .S))
         }
 
-        addPostAction(postAction: MoveAction(distance: 2, direction: Position.getRandomDirection()))
+        addPostAction(postAction: MoveAction(distance: 2, direction: .W))
         //addPostAction(postAction: DropMineAction(power: 100, dropDirection: Position.getRandomDirection, isRover == true ))
         
         

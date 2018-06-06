@@ -55,6 +55,7 @@ class TankWorld {
         for tank in tanks {
             tank.computePreActions()
             if let sendMessageAction = tank.preActions[.SendMessage] { handleSendMessageAction(tank, sendMessageAction as! SendMessageAction) }
+            tank.setShields(amount: 0)    //reset tank shields each turn
         }
         for tank in tanks {
             if let receiveMessageAction = tank.preActions[.ReceiveMessage] { handleRecieveMessageAction(tank, receiveMessageAction as! ReceiveMessageAction) }
@@ -75,11 +76,14 @@ class TankWorld {
                 else { handleDropMineAction(tank, dropMineAction as! DropMineAction) }
             }
             removeDeadObjects()
+            
             if let fireMissileAction = tank.postActions[.Missile] {handleFireMissileAction(tank, fireMissileAction as! MissileAction)}
-            removeDeadObjects()
+            removeDeadObjects(); if isDead(tank) {continue} //only instance where could kill self while still having actions left
+            
             if let moveAction = tank.postActions[.Move] { handleMoveAction(tank, moveAction as! MoveAction) }
             removeDeadObjects()
         }
+        
         for tank in tanks {
             tank.postActions = [:]
         }
@@ -88,31 +92,32 @@ class TankWorld {
     func moveRovers(rovers: [Mine]) {
         for rover in rovers {
             if isDead(rover) {continue}
-            handleMoveRover(rover)  //TODO: reduce energy for each moving?, or is that accounted for in turn life
+            handleMoveRover(rover)  //QQQ: reduce energy for each moving?, or is that accounted for in turn life
         }
     }
     
     func removeDeadObjects() {
-        if findAllTanks().count == 1 {  }   //QQQ: How stop the while loop if where you are checking is 3  functions underneath the loop -- is there a better way than having them just all return down the chain until it reaches the while loop?
+        if findAllTanks().count == 1 { gameOver = true }
         for gameObject in findAllGameObjects() {
             if isDead(gameObject) {
                 grid.removeGO(GO: gameObject)
+                livingTanks = livingTanks.filter({$0 !== gameObject})
             }
         }
     }
     
     func doTurn() {
-        let allObjects = randomizeGameObjects(gameObjects: findAllGameObjects())    //TODO: randomize them
+        let allObjects = randomizeGameObjects(gameObjects: findAllGameObjects())
         let allRovers = randomizeGameObjects(gameObjects: findAllRovers())
-        let allTanks = randomizeGameObjects(gameObjects: findAllTanks())
+        livingTanks = randomizeGameObjects(gameObjects: findAllTanks())
         //code to run a single turn
         
         chargeTurnEnergy(allObjects); removeDeadObjects()
         
         moveRovers(rovers: allRovers); removeDeadObjects()
         
-        runPreActions(allTanks)
-        runPostActions(allTanks); removeDeadObjects()
+        runPreActions(livingTanks)
+        runPostActions(livingTanks); removeDeadObjects()
         
         nextTurn()
     }
@@ -132,12 +137,12 @@ class TankWorld {
         while !gameOver {
             numberLivingTanks = findAllTanks().count
             if (numberLivingTanks <= 0) {setWinner(lastStandingTank: findWinner()); break}
-            runOneTurn() //TODO: must stop in middle of turn!!
-            if findAllTanks().count <= 1 {setWinner(lastStandingTank: findWinner()); break}
-            //if count == 2 {break}
+            runOneTurn()
+            if gameOver {setWinner(lastStandingTank: findWinner()); break}
+            //if count == 7 {break}
             count += 1
         }
-        //print("****Winner is...\(lastLivingTank!)****")
+        print("****Winner is...\(lastLivingTank!)****")
     }
 }
 

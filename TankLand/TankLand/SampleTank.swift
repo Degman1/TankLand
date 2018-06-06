@@ -24,7 +24,7 @@ class SampleTank: Tank {
     
     override func computePreActions(){
         //addPreAction(preAction: ShieldAction(power: 300))
-        //radarResults = nil  //TODO: make sure to set it to this so if not yet updated, has at least been initiated
+        //radarResults = nil  //make sure to set it to this so if not yet updated, has at least been initiated
         //addPreAction(preAction: RadarAction(range: 4))
         //addPreAction(preAction: SendMessageAction(key: "\(id): someRandomPassward", message: "Message Sending Works for tank \(id)!"))
         //addPreAction(preAction: ReceiveMessageAction(key: "\(id): someRandomPassward"))
