@@ -15,11 +15,18 @@ print("Hello World\n")
 
 var tankWorld = TankWorld()
 
-var j1 = SampleTank(id: "1_SampleTank", row: 0, col: 0, energy: Constants.initialTankEnergy, instructions: "")
-var j2 = GameTank(id: "1_GameTank", row: 0, col: 14, energy: Constants.initialTankEnergy, instructions: "")
-var j3 = SampleTank(id: "2_SampleTank", row: 2, col: 2, energy: Constants.initialTankEnergy, instructions: "")
+var tanks: [Tank] = []
+tanks.append( GameTank(id: "0_GameTank", row: 1, col: 1, energy: Constants.initialTankEnergy, instructions: "") )
+tanks.append( GameTank(id: "1_GameTank", row: 1, col: 14, energy: Constants.initialTankEnergy, instructions: "") )
+tanks.append( GameTank(id: "2_GameTank", row: 14, col: 1, energy: Constants.initialTankEnergy, instructions: "") )
+tanks.append( GameTank(id: "3_GameTank", row: 14, col: 14, energy: Constants.initialTankEnergy, instructions: "") )
+tanks.append( GameTank(id: "4_GameTank", row: 7, col: 7, energy: Constants.initialTankEnergy, instructions: "") )
 
-var tanks = [j1, j2, j3]
+//var j1 = SampleTank(id: "1_SampleTank", row: 0, col: 0, energy: Constants.initialTankEnergy, instructions: "")
+//var j2 = GameTank(id: "1_GameTank", row: 0, col: 14, energy: Constants.initialTankEnergy, instructions: "")
+//var j3 = SampleTank(id: "2_SampleTank", row: 2, col: 2, energy: Constants.initialTankEnergy, instructions: "")
+
+
 tankWorld.populateTankWorld(tanks: tanks)
 
 tankWorld.driver()

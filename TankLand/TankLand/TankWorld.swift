@@ -97,8 +97,8 @@ class TankWorld {
     }
     
     func removeDeadObjects() {
-        if findAllTanks().count == 1 { gameOver = true }
         for gameObject in findAllGameObjects() {
+            if findAllTanks().count == 1 { setWinner(lastStandingTank: findWinner()) }
             if isDead(gameObject) {
                 grid.removeGO(GO: gameObject)
                 livingTanks = livingTanks.filter({$0 !== gameObject})
@@ -136,10 +136,9 @@ class TankWorld {
         
         while !gameOver {
             numberLivingTanks = findAllTanks().count
-            if (numberLivingTanks <= 0) {setWinner(lastStandingTank: findWinner()); break}
             runOneTurn()
-            if gameOver {setWinner(lastStandingTank: findWinner()); break}
-            //if count == 7 {break}
+            if gameOver || numberLivingTanks <= 0 {setWinner(lastStandingTank: lastLivingTank!); break}
+            //if count == 1 {break}
             count += 1
         }
         print("****Winner is...\(lastLivingTank!)****")

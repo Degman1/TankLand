@@ -215,17 +215,17 @@ extension TankWorld {   //functions to run and handle actions go here
         let newPos = Position.newPosition(position: rover.position, direction: (rover.moveDirection == nil) ? Position.getRandomDirection() : rover.moveDirection!, magnitude: 1)
         //findFreeAdjacent(rover.position)
         if isPositionEmpty(newPos) {
+            logger.addLog(gameObject: rover, message: "Moved to position \(newPos)")
             grid.moveGO(GO: rover, newCoords: newPos)
-            logger.addLog(gameObject: rover, message: "Moved to position \(rover.position)")
         } else {
             let contents = grid.getGO(coords: newPos)!
             if contents.objectType == .mine || contents.objectType == .rover {
                 logger.addLog(gameObject: contents, message: "Exploded at position \(contents.position)")
-                logger.addLog(gameObject: rover, message: "Exploded at position \(rover.position)")
+                logger.addLog(gameObject: rover, message: "Exploded at position \(contents.position)")
                 applyDamage(contents, amount: contents.energy)
                 applyDamage(rover, amount: rover.energy)
             } else {
-                logger.addLog(gameObject: rover, message: "Exploded at position \(rover.position)")
+                logger.addLog(gameObject: rover, message: "Exploded at position \(contents.position)")
                 applyDamage(contents, amount: rover.energy * Constants.mineStrikeMultiple)
                 applyDamage(rover, amount: rover.energy)
             }
