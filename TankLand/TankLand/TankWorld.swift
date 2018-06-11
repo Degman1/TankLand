@@ -22,14 +22,17 @@ class TankWorld {
     init() {}
     
     func populateTankWorld(tanks: [Tank]) {
+        var randomPlacement = Position(getRandomInt(range: 15), getRandomInt(range: 15))
         for tank in tanks {
-            addGameObject(gameObject: tank)
+            if isPositionEmpty(randomPlacement) == true {
+                addGameObject(gameObject: tank)
+            }
         }
     }
     
     func addGameObject(gameObject: GameObject) {
         logger.addMajorLogger(gameObject: gameObject, message: "Added to TankLand")
-        grid.generateGO(GO: gameObject, coords: gameObject.position)
+        grid.generateGO(GO: gameObject, coords: gameObject.randomPlacement)
         if gameObject.objectType == .tank {numberLivingTanks += 1}
     }
     
