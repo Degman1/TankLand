@@ -23,9 +23,9 @@ class SampleTank: Tank {
     //WORKING: shields, sendmessage, receivemessage, radar, move, dropmine
     
     override func computePreActions(){
-        //addPreAction(preAction: ShieldAction(power: 300))
+        addPreAction(preAction: ShieldAction(power: 300))
         //radarResults = nil  //make sure to set it to this so if not yet updated, has at least been initiated
-        //addPreAction(preAction: RadarAction(range: 4))
+        addPreAction(preAction: RadarAction(range: 4))
         //addPreAction(preAction: SendMessageAction(key: "\(id): someRandomPassward", message: "Message Sending Works for tank \(id)!"))
         //addPreAction(preAction: ReceiveMessageAction(key: "\(id): someRandomPassward"))
         super.computePreActions()   //why calling this ???
@@ -43,7 +43,7 @@ class SampleTank: Tank {
         
         
         
-        /*if (chanceOf(percent: 50)){
+        if (chanceOf(percent: 50)){
             let randomDirection = Direction(rawValue: getRandomInt(range: 7))!
             addPostAction(postAction: MoveAction(distance: 2, direction: randomDirection))
         }
