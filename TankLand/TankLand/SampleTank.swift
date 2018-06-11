@@ -15,7 +15,7 @@ class SampleTank: Tank {
         super.init(id: id, row: row, col: col, energy: energy, instructions: instructions)
     }
     
-    func chanceOf (percent: Int) -> Bool{
+    func chanceOf (percent: Int) -> Bool {
         let ran = getRandomInt(range: 100)
         return percent <= ran
     }
@@ -53,6 +53,6 @@ class SampleTank: Tank {
         if (chanceOf(percent: 50)) {return}
         let randomItem = rs[getRandomInt(range: rs.count)]
         let missileEnergy = energy > 20000 ? 1000 : (energy / 20)
-        addPostAction (postAction: MissileAction(power: missileEnergy, target: randomItem.position))*/
+        addPostAction (postAction: MissileAction(power: missileEnergy, target: randomItem.position))
     }
 }

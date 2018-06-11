@@ -88,7 +88,7 @@ extension TankWorld {   //functions to run and handle actions go here
                     applyDamage(rover, amount: rover.energy)
                 }
             } else {
-                addGameObject(gameObject: rover)
+                addGameObject(gameObject: rover, rover.position)
             }
         } else {
             let mine = Mine(row: dropPos.y, col: dropPos.x, energy: dropMineAction.power, isRover: false, moveDirection: dropMineAction.moveDirection)
@@ -105,7 +105,7 @@ extension TankWorld {   //functions to run and handle actions go here
                     applyDamage(mine, amount: mine.energy)
                 }
             } else {
-                addGameObject(gameObject: mine)
+                addGameObject(gameObject: mine, mine.position)
             }
         }
     }

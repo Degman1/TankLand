@@ -22,17 +22,20 @@ class TankWorld {
     init() {}
     
     func populateTankWorld(tanks: [Tank]) {
-        var randomPlacement = Position(getRandomInt(range: 15), getRandomInt(range: 15))
         for tank in tanks {
-            if isPositionEmpty(randomPlacement) == true {
-                addGameObject(gameObject: tank)
-            }
+            var randomPlacement: Position
+            repeat {
+                randomPlacement = Position(getRandomInt(range: 15), getRandomInt(range: 15))
+            } while isPositionEmpty(randomPlacement) == false
+            tank.setPosition(newPosition: randomPlacement)
+            addGameObject(gameObject: tank, randomPlacement)
+
         }
     }
     
-    func addGameObject(gameObject: GameObject) {
+    func addGameObject(gameObject: GameObject, _ pos: Position) {
         logger.addMajorLogger(gameObject: gameObject, message: "Added to TankLand")
-        grid.generateGO(GO: gameObject, coords: gameObject.randomPlacement)
+        grid.generateGO(GO: gameObject, coords: pos)
         if gameObject.objectType == .tank {numberLivingTanks += 1}
     }
     
@@ -141,7 +144,7 @@ class TankWorld {
             numberLivingTanks = findAllTanks().count
             runOneTurn()
             if gameOver || numberLivingTanks <= 0 {setWinner(lastStandingTank: lastLivingTank!); break}
-            if count == 20 {break}
+            //if count == 20 {break}
             count += 1
         }
         print("****Winner is...\(lastLivingTank!)****")

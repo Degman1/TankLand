@@ -12,7 +12,7 @@ struct Constants {
     static var gridSize = 15
     
     static var initialTankEnergy = 100000
-    static var costOfRadarByUnitsDistance = [0, 100, 200, 400, 800, 1600, 3200, 6400, 12400]    //does units distance start at zero units, or 1 unit ???
+    static var costOfRadarByUnitsDistance = [0, 100, 200, 400, 800, 1600, 3200, 6400, 12400]
     static var costOfSendingMessage = 100
     static var costOfReceivingMessage = 100
     static var costOfReleasingMine = 250
