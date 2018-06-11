@@ -141,7 +141,7 @@ class TankWorld {
             numberLivingTanks = findAllTanks().count
             runOneTurn()
             if gameOver || numberLivingTanks <= 0 {setWinner(lastStandingTank: lastLivingTank!); break}
-            //if count == 1 {break}
+            if count == 20 {break}
             count += 1
         }
         print("****Winner is...\(lastLivingTank!)****")
