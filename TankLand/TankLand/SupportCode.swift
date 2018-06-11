@@ -75,3 +75,12 @@ func fit(_ s: String, _ size: Int, right: Bool = false) -> String {
 func getRandomInt(range: Int) -> Int {   //goes from 0-range
     return Int(arc4random_uniform(UInt32(range)))
 }
+
+func time() -> String {
+    let currentDate = Date()
+    let currentCalendar = Calendar.current
+    let currentHour = currentCalendar.component(.hour, from: currentDate)
+    let currentMinute = currentCalendar.component(.minute, from: currentDate)
+    let currentSecond = currentCalendar.component(.second, from: currentDate)
+    return "\(currentHour):\(currentMinute):\(currentSecond)"
+}

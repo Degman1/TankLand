@@ -16,9 +16,7 @@ struct Logger {     //create a simple logger
         majorLoggers = []
         turn = 0
     }
-    
-    let timestamp = NSDate().timeIntervalSince1970
-    
+        
     mutating func log(_ message: String) {
         print(message)
     }
@@ -30,8 +28,8 @@ struct Logger {     //create a simple logger
     
     mutating func addLog(gameObject: GameObject, message: String) {
         if majorLoggers.contains(where: {$0 === gameObject}) {
-            log("\(turn) \(NSDate()) \(gameObject.id) \(gameObject.position) \(message)")
+            log("\(turn) \(time()) \(gameObject.id) \(gameObject.position) \(message)")
         } //use === to compare refernce types
-        else { log("\(turn) \(timestamp) \(gameObject.id) does not have permission to log") }
+        else { log("\(turn) \(time()) \(gameObject.id) does not have permission to log") }
     }
 }
