@@ -16,17 +16,11 @@ extension TankWorld {    //extends tankland class, this is where the helper func
     }
     
     func isPositionEmpty(_ position: Position)->Bool{
-        if grid.getGO(coords: position) == nil {
-            return true
-        }
-        return false
+        return grid.getGO(coords: position) == nil
     }
     
     func isDead(_ gameObject: GameObject)->Bool {
-        if gameObject.energy <= 0 {
-            return true
-        }
-        return false
+        return gameObject.energy <= 0
     }
     
     func applyCost(_ go: GameObject, amount: Int) {
@@ -109,10 +103,7 @@ extension TankWorld {    //extends tankland class, this is where the helper func
     }
                      
     func isEnergyAvailable(_ gameObject: GameObject, amount: Int) -> Bool {
-        if gameObject.energy - amount > 0  {
-            return true
-        }
-        return false
+        return gameObject.energy - amount > 0
     }
 
     func findWinner() -> Tank {
